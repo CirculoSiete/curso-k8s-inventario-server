@@ -51,6 +51,7 @@ dependencies {
   compile 'io.grpc:grpc-protobuf'
   compile 'io.grpc:grpc-netty'
   compile 'org.springframework.boot:spring-boot-starter-actuator'
+  compile 'org.springframework.boot:spring-boot-starter-amqp'
   compile 'ru.alfalab.grpc.spring:starter'
 
   compileOnly 'org.projectlombok:lombok'
