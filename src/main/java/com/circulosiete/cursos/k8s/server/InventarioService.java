@@ -28,7 +28,7 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
 
     // analizar request
     System.out.println(request);
-    sender.sendToRabbitmq("mensaje lol xd");
+    sender.sendToRabbitmq("mensaje");
     logger.debug("Request " + request);
 
     // se manda respuesta
