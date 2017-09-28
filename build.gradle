@@ -1,0 +1,119 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.1'
+    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.1.RELEASE'
+  }
+}
+
+repositories {
+  jcenter()
+}
+
+description = 'Independent example for end-to-end copy and use'
+
+apply plugin: 'idea'
+apply plugin: 'groovy'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'com.google.protobuf'
+
+ext {
+  grpcVersion = '1.1.2'
+  protobufVersion = '3.2.0'
+  protoGenDir = file('generated-src/')
+}
+
+dependencyManagement {
+  imports {
+    mavenBom 'io.spring.platform:platform-bom:Brussels-RELEASE'
+  }
+  dependencies {
+    dependencySet(group: 'io.grpc', version: grpcVersion) {
+      entry 'grpc-all'
+      entry 'grpc-netty'
+      entry 'grpc-protobuf'
+      entry 'grpc-stub'
+    }
+    dependency 'ru.alfalab.grpc.spring:starter:0.5.9'
+    dependency "com.google.protobuf:protobuf-java:$protobufVersion"
+    dependency 'org.projectlombok:lombok:1.16.14'
+    dependency 'org.codehaus.groovy:groovy-all:2.4.8'
+
+    dependency 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
+    dependency 'org.spockframework:spock-spring:1.1-groovy-2.4-rc-3'
+  }
+}
+
+dependencies {
+  compile 'io.grpc:grpc-stub'
+  compile 'io.grpc:grpc-protobuf'
+  compile 'io.grpc:grpc-netty'
+  compile 'org.springframework.boot:spring-boot-starter-actuator'
+  compile 'ru.alfalab.grpc.spring:starter'
+
+  compileOnly 'org.projectlombok:lombok'
+
+  testCompile 'org.codehaus.groovy:groovy-all'
+  testCompile 'org.springframework.boot:spring-boot-starter-test'
+  testCompile 'org.spockframework:spock-core'
+  testCompile 'org.spockframework:spock-spring'
+}
+
+sourceSets {
+  main {
+    proto {
+      srcDir 'src/main/proto'
+    }
+    java {
+      srcDir "$protoGenDir/main/java"
+    }
+  }
+}
+
+idea {
+  module {
+    sourceDirs += file('./src/main/proto')
+    sourceDirs += file("${protoGenDir}")
+  }
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:$protobufVersion"
+  }
+
+  plugins {
+    grpc {
+      artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion"
+    }
+  }
+
+  generateProtoTasks {
+    ofSourceSet('main').each { task ->
+      task.builtins {
+        java {
+          outputSubDir = 'java'
+        }
+      }
+      task.plugins {
+        grpc {
+          outputSubDir = 'java'
+        }
+      }
+    }
+  }
+  generatedFilesBaseDir = protoGenDir
+}
+
+task cleanProtoGen {
+  doFirst {
+    delete "${protoGenDir}"
+  }
+}
+clean.dependsOn cleanProtoGen
+
+springBoot {
+  executable = true
+}

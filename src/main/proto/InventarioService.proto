@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package com.circulosiete.cursos.k8s;
+option java_multiple_files= true;
+
+message InventarioRequest {
+  string producto = 1;
+  float precio = 2;
+  string descripcion = 3;
+}
+
+message InventarioResponse {
+  bool queue = 1;
+  bool db = 2;
+}
+
+service  InventarioService {
+  rpc InventarioHandler (InventarioRequest) returns (InventarioResponse);
+}
