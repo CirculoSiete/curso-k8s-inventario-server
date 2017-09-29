@@ -15,4 +15,6 @@ public class Sender {
     this.rabbitMessagingTemplate.convertAndSend("exchange", "index.queue", msg);
   }
 
+
+
 }
