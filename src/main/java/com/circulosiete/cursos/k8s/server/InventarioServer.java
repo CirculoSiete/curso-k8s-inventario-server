@@ -12,9 +12,4 @@ public class InventarioServer {
   public static void main(String[] args) {
     SpringApplication.run(InventarioServer.class, args);
   }
-
-  @PreDestroy
-  public void Destroy(){
-    System.out.println("mamo...");
-  }
 }
