@@ -1,9 +1,6 @@
 package com.circulosiete.cursos.k8s.server;
 
-import com.circulosiete.cursos.k8s.IdRequest;
-import com.circulosiete.cursos.k8s.InventarioRequest;
-import com.circulosiete.cursos.k8s.InventarioResponse;
-import com.circulosiete.cursos.k8s.InventarioServiceGrpc;
+import com.circulosiete.cursos.k8s.*;
 import com.circulosiete.cursos.k8s.server.service.Sender;
 import com.circulosiete.cursos.k8s.server.model.Producto;
 import com.circulosiete.cursos.k8s.server.repo.ProductoRepository;
@@ -31,26 +28,6 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
   public InventarioService(Sender sender, ProductoRepository productoRepository){
     this.sender = sender;
     this.productoRepository = productoRepository;
-  }
-
-  @Override
-  public void inventarioHandler(InventarioRequest request, StreamObserver<InventarioResponse> responseObserver){
-
-    // analizar request
-
-    productoRepository.save(new Producto("nombre", "descripcion", 80));
-    System.out.println(request);
-
-    sender.sendToRabbitmq("mensaje");
-    logger.debug("Request " + request);
-
-    // se manda respuesta
-    responseObserver.onNext(InventarioResponse.newBuilder()
-            .setQueue(true)
-            .setDb(true)
-            .build());
-    // se cierra
-    responseObserver.onCompleted();
   }
 
   @Override
@@ -84,12 +61,9 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
 
   @Override
   public void inventarioDelete(IdRequest request, StreamObserver<InventarioResponse> responseObserver){
-
-
-
     // se borra en postgres
-    Producto producto = productoRepository.findOne(1L);
-    productoRepository.delete(1L);
+    Producto producto = productoRepository.findOne(request.getId());
+    productoRepository.delete(request.getId());
     // productoRepository.delete();
 
     // se crea json para encolar
@@ -116,5 +90,57 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
 
     // se cierra canal GRPC
     responseObserver.onCompleted();
+  }
+
+  @Override
+  public void inventarioGet(IdRequest request, StreamObserver<GetResponse> responseObserver){
+    // se obtiene en postgres
+    Producto producto = productoRepository.findOne(request.getId());
+
+    // se manda respuesta cliente GRPC
+    responseObserver.onNext(GetResponse.newBuilder()
+            .setId(producto.getId())
+            .setNombre(producto.getNombre())
+            .setDescripcion(producto.getDescripcion())
+            .setPrecio(producto.getPrecio())
+            .build());
+    // se cierra canal GRPC
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void inventarioUpdate(GetResponse request, StreamObserver<InventarioResponse> responseObserver){
+    // se busca y actualiza
+    Producto producto = productoRepository.findOne(request.getId());
+    producto.setNombre(request.getNombre());
+    producto.setDescripcion(request.getDescripcion());
+    producto.setPrecio(request.getPrecio());
+    productoRepository.save(producto);
+
+    // se crea json para encolar
+    JsonObject queueObject = new JsonObject();
+    queueObject.addProperty("id", producto.getId());
+    queueObject.addProperty("nombre", producto.getNombre());
+    queueObject.addProperty("descripcion", producto.getDescripcion());
+    queueObject.addProperty("precio", producto.getPrecio());
+
+    JsonObject queueJson = new JsonObject();
+    queueJson.addProperty("tipo", "producto");
+    queueJson.addProperty("operacion", "actualizacion");
+    queueJson.add("data", queueObject);
+
+    // mandar a cola de rabbit
+    System.out.println(gson.toJson(queueJson));
+    sender.sendToRabbitmq(gson.toJson(queueJson));
+
+    // se manda respuesta cliente GRPC
+    responseObserver.onNext(InventarioResponse.newBuilder()
+            .setQueue(true)
+            .setDb(true)
+            .build());
+
+    // se cierra canal GRPC
+    responseObserver.onCompleted();
+
   }
 }
