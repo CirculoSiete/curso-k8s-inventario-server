@@ -2,19 +2,28 @@ grpc:
  enabled: true
  servers:
    -
-     address: 127.0.0.1
-     port: 7000
+     # 127.0.0.1
+     address: ${GRPC_ADDRESS}
+     # 7000
+     port: ${GRPC_PORT}
 
 spring:
   rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
+    # localhost
+    host: ${RABBIT_HOST}
+    # 5672
+    port: ${RABBIT_PORT}
+    # guest
+    username: ${RABBIT_USER}
+    # guest
+    password: ${RABBIT_PASS}
   datasource:
-    url: "jdbc:postgresql://localhost:5432/mydb"
-    username: "postgres"
-    password: "example"
+    # jdbc:postgresql://localhost:5432/mydb
+    url: ${POSTGRES_URL}
+    # postgres
+    username: ${POSTGRES_USER}
+    # example
+    password: ${POSTGRES_PASS}
     driver-class-name: "org.postgresql.Driver"
   jpa:
     generate-ddl: true

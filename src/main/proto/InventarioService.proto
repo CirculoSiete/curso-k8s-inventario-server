@@ -26,9 +26,9 @@ message InventarioResponse {
 }
 
 service  InventarioService {
-  rpc InventarioHandler (InventarioRequest) returns (InventarioResponse);
   rpc InventarioCreate (InventarioRequest) returns (InventarioResponse);
   rpc InventarioGet (IdRequest) returns (GetResponse);
   rpc InventarioDelete (IdRequest) returns (InventarioResponse);
+  rpc InventarioUpdate (GetResponse) returns (InventarioResponse);
 
 }

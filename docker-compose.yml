@@ -1,4 +1,3 @@
-# Use postgres/example user/password credentials
 version: '3.1'
 services:
   db:
@@ -19,3 +18,17 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+  inventarioServer:
+    image: circulo7/cursos-k8s-inventario-server:0.0.1-snapshot
+    ports:
+      - "7000:7000"
+    environment:
+      GRPC_ADDRESS: inventarioServer
+      GRPC_PORT: 7000
+      RABBIT_HOST: rabbitmq
+      RABBIT_PORT: 5672
+      RABBIT_USER: guest
+      RABBIT_PASS: guest
+      POSTGRES_URL: jdbc:postgresql://db:5432/mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASS: example
