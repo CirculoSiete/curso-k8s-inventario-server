@@ -5,6 +5,7 @@ import com.circulosiete.cursos.k8s.server.service.Sender;
 import com.circulosiete.cursos.k8s.server.model.Producto;
 import com.circulosiete.cursos.k8s.server.repo.ProductoRepository;
 
+import com.circulosiete.cursos.k8s.server.service.Validacion;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.grpc.spring.boot.autoconfigure.annotation.GRpcService;
@@ -23,36 +24,46 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
   private Logger logger = LoggerFactory.getLogger(InventarioService.class);
   private final Sender sender;
   private ProductoRepository productoRepository;
+  private Validacion validacion;
   private Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
-  public InventarioService(Sender sender, ProductoRepository productoRepository){
+  public InventarioService(Sender sender, ProductoRepository productoRepository, Validacion validacion){
     this.sender = sender;
     this.productoRepository = productoRepository;
+    this.validacion = validacion;
   }
 
   @Override
   public void inventarioCreate(InventarioRequest request, StreamObserver<InventarioResponse> responseObserver){
+    boolean aceptado = false;
     // se guarda en postgres
-    productoRepository.save(new Producto(request.getNombre(), request.getDescripcion(), request.getPrecio()));
+    if (validacion.createValidacion(request.getNombre())){
+      System.out.println("es valido");
+      productoRepository.save(new Producto(request.getNombre(), request.getDescripcion(), request.getPrecio()));
 
-    // se crea json para encolar
-    JsonObject queueObject = new JsonObject();
-    queueObject.addProperty("nombre", request.getNombre());
-    queueObject.addProperty("descripcion", request.getDescripcion());
-    queueObject.addProperty("precio", request.getPrecio());
+      // se crea json para encolar
+      JsonObject queueObject = new JsonObject();
+      queueObject.addProperty("nombre", request.getNombre());
+      queueObject.addProperty("descripcion", request.getDescripcion());
+      queueObject.addProperty("precio", request.getPrecio());
 
-    JsonObject queueJson = new JsonObject();
-    queueJson.addProperty("tipo", "producto");
-    queueJson.addProperty("operacion", "alta");
-    queueJson.add("data", queueObject);
+      JsonObject queueJson = new JsonObject();
+      queueJson.addProperty("tipo", "producto");
+      queueJson.addProperty("operacion", "alta");
+      queueJson.add("data", queueObject);
 
-    // mandar a cola de rabbit
-    sender.sendToRabbitmq(gson.toJson(queueJson));
+      // mandar a cola de rabbit
+      sender.sendToRabbitmq(gson.toJson(queueJson));
+
+      aceptado = true;
+    }else{
+      System.out.println("no es valido");
+      aceptado = false;
+    }
 
     // se manda respuesta cliente GRPC
     responseObserver.onNext(InventarioResponse.newBuilder()
-            .setQueue(true)
-            .setDb(true)
+            .setAceptado(aceptado)
             .build());
 
     // se cierra canal GRPC
@@ -84,8 +95,7 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
 
     // se manda respuesta cliente GRPC
     responseObserver.onNext(InventarioResponse.newBuilder()
-            .setQueue(true)
-            .setDb(true)
+            .setAceptado(true)
             .build());
 
     // se cierra canal GRPC
@@ -135,8 +145,7 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
 
     // se manda respuesta cliente GRPC
     responseObserver.onNext(InventarioResponse.newBuilder()
-            .setQueue(true)
-            .setDb(true)
+            .setAceptado(true)
             .build());
 
     // se cierra canal GRPC

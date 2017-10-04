@@ -21,8 +21,15 @@ message GetResponse {
 }
 
 message InventarioResponse {
-  bool queue = 1;
-  bool db = 2;
+  bool aceptado = 1;
+}
+
+message ValidacionResponse {
+  bool valido = 1;
+}
+
+message CreateRequest {
+  string nombre = 1;
 }
 
 service  InventarioService {
@@ -31,4 +38,9 @@ service  InventarioService {
   rpc InventarioDelete (IdRequest) returns (InventarioResponse);
   rpc InventarioUpdate (GetResponse) returns (InventarioResponse);
 
+}
+
+service ValidacionService {
+  rpc ValidacionCreate (CreateRequest) returns (ValidacionResponse);
+  rpc ValidacionDelete (IdRequest) returns (ValidacionResponse);
 }
