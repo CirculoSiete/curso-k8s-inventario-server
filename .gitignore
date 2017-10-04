@@ -1,0 +1,9 @@
+.gradle
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings
+build
+generated-src
