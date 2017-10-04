@@ -1,0 +1,29 @@
+grpc:
+ enabled: true
+ servers:
+   -
+     # 127.0.0.1
+     address: 127.0.0.1
+     # 7000
+     port: 7000
+
+spring:
+  rabbitmq:
+    # localhost
+    host: localhost
+    # 5672
+    port: 5672
+    # guest
+    username: guest
+    # guest
+    password: guest
+  datasource:
+    # jdbc:postgresql://localhost:5432/mydb
+    url: jdbc:postgresql://localhost:5432/mydb
+    # postgres
+    username: postgres
+    # example
+    password: example
+    driver-class-name: "org.postgresql.Driver"
+  jpa:
+    generate-ddl: true
