@@ -15,7 +15,7 @@ services:
   inventarioserver:
     build: build/libs
     ports:
-      - 7000:7000
+      - 6565:6565
     environment:
       GRPC_ADDRESS: inventarioServer
       GRPC_PORT: 7000

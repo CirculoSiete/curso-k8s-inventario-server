@@ -1,9 +1,5 @@
 grpc:
  enabled: true
- servers:
-   -
-     address: 127.0.0.1
-     port: 7000
 
 spring:
   datasource:

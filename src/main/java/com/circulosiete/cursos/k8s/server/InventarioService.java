@@ -12,8 +12,6 @@ import com.google.gson.JsonObject;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.grpc.spring.boot.autoconfigure.annotation.GRpcService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
@@ -22,7 +20,6 @@ import java.math.BigDecimal;
 @GRpcService
 public class InventarioService extends InventarioServiceGrpc.InventarioServiceImplBase {
 
-  private Logger logger = LoggerFactory.getLogger(InventarioService.class);
   private final Sender sender;
   private ProductoRepository productoRepository;
   private Validacion validacion;
