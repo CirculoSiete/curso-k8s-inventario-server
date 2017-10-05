@@ -3,18 +3,14 @@ services:
   db:
     build: postgres
     volumes:
-      - "./data/postgres:/var/lib/postgresql/data"
-    ports:
-      - 5432:5432
+      - ./data/postgres:/var/lib/postgresql/data
   adminer:
     image: adminer
-    restart: always
     ports:
        - 8080:8080
   rabbitmq:
     image: rabbitmq:management
     ports:
-      - 5672:5672
       - 15672:15672
   inventarioserver:
     build: build/libs
