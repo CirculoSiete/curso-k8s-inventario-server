@@ -1,7 +1,7 @@
 package com.circulosiete.cursos.k8s.server;
 
 import com.circulosiete.cursos.k8s.*;
-import com.circulosiete.cursos.k8s.server.model.Producto;
+import com.circulosiete.cursos.k8s.server.model.Product;
 import com.circulosiete.cursos.k8s.server.repo.ProductoRepository;
 import com.circulosiete.cursos.k8s.server.service.Sender;
 import com.circulosiete.cursos.k8s.server.service.Validacion;
@@ -41,7 +41,7 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
     if (validacion.createValidacion(request.getNombre())) {
       log.info("es valido");
 
-      Producto product = Producto.builder()
+      Product product = Product.builder()
         .name(request.getNombre())
         .description(request.getDescripcion())
         .price(BigDecimal.valueOf(request.getPrecio()))
@@ -81,19 +81,19 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
   @Override
   public void inventarioDelete(IdRequest request, StreamObserver<InventarioResponse> responseObserver) {
     // se borra en postgres
-    Producto producto = productoRepository.findOne(request.getId());
+    Product product = productoRepository.findOne(request.getId());
     productoRepository.delete(request.getId());
     // productoRepository.delete();
 
     // se crea json para encolar
     JsonObject queueObject = new JsonObject();
     queueObject.addProperty("id", request.getId());
-    queueObject.addProperty("nombre", producto.getName());
-    queueObject.addProperty("descripcion", producto.getDescription());
-    queueObject.addProperty("precio", producto.getPrice());
+    queueObject.addProperty("nombre", product.getName());
+    queueObject.addProperty("descripcion", product.getDescription());
+    queueObject.addProperty("precio", product.getPrice());
 
     JsonObject queueJson = new JsonObject();
-    queueJson.addProperty("tipo", "producto");
+    queueJson.addProperty("tipo", "product");
     queueJson.addProperty("operacion", "borrado");
     queueJson.add("data", queueObject);
 
@@ -113,14 +113,14 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
   @Override
   public void inventarioGet(IdRequest request, StreamObserver<GetResponse> responseObserver) {
     // se obtiene en postgres
-    Producto producto = productoRepository.findOne(request.getId());
+    Product product = productoRepository.findOne(request.getId());
 
     // se manda respuesta cliente GRPC
     responseObserver.onNext(GetResponse.newBuilder()
-      .setId(producto.getId())
-      .setNombre(producto.getName())
-      .setDescripcion(producto.getDescription())
-      .setPrecio(producto.getPrice().intValue())
+      .setId(product.getId())
+      .setNombre(product.getName())
+      .setDescripcion(product.getDescription())
+      .setPrecio(product.getPrice().intValue())
       .build());
     // se cierra canal GRPC
     responseObserver.onCompleted();
@@ -129,21 +129,21 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
   @Override
   public void inventarioUpdate(GetResponse request, StreamObserver<InventarioResponse> responseObserver) {
     // se busca y actualiza
-    Producto producto = productoRepository.findOne(request.getId());
-    producto.setName(request.getNombre());
-    producto.setDescription(request.getDescripcion());
-    producto.setPrice(BigDecimal.valueOf(request.getPrecio()));
-    productoRepository.save(producto);
+    Product product = productoRepository.findOne(request.getId());
+    product.setName(request.getNombre());
+    product.setDescription(request.getDescripcion());
+    product.setPrice(BigDecimal.valueOf(request.getPrecio()));
+    productoRepository.save(product);
 
     // se crea json para encolar
     JsonObject queueObject = new JsonObject();
-    queueObject.addProperty("id", producto.getId());
-    queueObject.addProperty("nombre", producto.getName());
-    queueObject.addProperty("descripcion", producto.getDescription());
-    queueObject.addProperty("precio", producto.getPrice());
+    queueObject.addProperty("id", product.getId());
+    queueObject.addProperty("nombre", product.getName());
+    queueObject.addProperty("descripcion", product.getDescription());
+    queueObject.addProperty("precio", product.getPrice());
 
     JsonObject queueJson = new JsonObject();
-    queueJson.addProperty("tipo", "producto");
+    queueJson.addProperty("tipo", "product");
     queueJson.addProperty("operacion", "actualizacion");
     queueJson.add("data", queueObject);
 
