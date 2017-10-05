@@ -5,11 +5,11 @@ services:
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
   adminer:
-    image: adminer
+    image: adminer:4.3.1
     ports:
        - 8080:8080
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:3.6.12-management
     ports:
       - 15672:15672
   inventarioserver:
