@@ -17,10 +17,8 @@ Para limpiar las interfaces del servidor y el cliente GRPC.
       
 ### Run
 
-Para correr la aplicacion.
+Para correr la aplicacion con Docker Compose, es requisito primero construir la imagen de Docker, la tarea `buildImage` se ancargará de construir la aplicación de Spring Boot y generar el Dockerfile requerido, además de construir la imagen de Docker de forma local.
 
-      $ ./gradlew bootRun
-      
-#### Correr localmente
-Para correr localmente es necesario utilizar el archivo de configuracion
-`Application-local.yml`
+      $ ./gradlew buildImage
+      $ docker-compose up --build
+
