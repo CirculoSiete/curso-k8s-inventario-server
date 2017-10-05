@@ -17,7 +17,5 @@ services:
     ports:
       - 6565:6565
     environment:
-      GRPC_ADDRESS: inventarioServer
-      GRPC_PORT: 7000
       RABBIT_HOST: rabbitmq
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse
