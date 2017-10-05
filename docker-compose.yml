@@ -1,13 +1,11 @@
 version: '3.1'
 services:
   db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: example
+    build: postgres
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
     ports:
       - 5432:5432
-
   adminer:
     image: adminer
     restart: always
@@ -16,19 +14,14 @@ services:
   rabbitmq:
     image: rabbitmq:management
     ports:
-      - "5672:5672"
-      - "15672:15672"
-  inventarioServer:
-    image: circulo7/cursos-k8s-inventario-server:0.0.1-snapshot
+      - 5672:5672
+      - 15672:15672
+  inventarioserver:
+    build: build/libs
     ports:
-      - "7000:7000"
+      - 7000:7000
     environment:
       GRPC_ADDRESS: inventarioServer
       GRPC_PORT: 7000
       RABBIT_HOST: rabbitmq
-      RABBIT_PORT: 5672
-      RABBIT_USER: guest
-      RABBIT_PASS: guest
-      POSTGRES_URL: jdbc:postgresql://db:5432/mydb
-      POSTGRES_USER: postgres
-      POSTGRES_PASS: example
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse

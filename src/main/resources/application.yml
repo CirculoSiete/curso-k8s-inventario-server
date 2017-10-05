@@ -8,8 +8,8 @@ grpc:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/warehouse
-    username: postgres
-    password: example
+    username: storer
+    password: foryoureyes
     driver-class-name: org.postgresql.Driver
   jpa:
     generate-ddl: true

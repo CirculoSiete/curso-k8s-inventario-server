@@ -1,0 +1,24 @@
+version: '3.1'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - 5432:5432
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  inventarioServer:
+    image: circulo7/cursos-k8s-inventario-server:0.0.1-snapshot
+    ports:
+      - "7000:7000"
+    environment:
+      GRPC_ADDRESS: inventarioServer
+      GRPC_PORT: 7000
+      RABBIT_HOST: rabbitmq
+      POSTGRES_URL: jdbc:postgresql://db:5432/warehouse
+      POSTGRES_USER: warehouser
+      POSTGRES_PASS: topsecret
