@@ -31,3 +31,17 @@ Crear producto:
 
       $ client.inventarioCreate({nombre: "chicle", descripcion: "masticable", precio:5}, printReply)
 
+Obtener producto:
+
+      $ client.inventarioGet({id: 1}, printReply)
+      
+Eliminar producto:
+
+      $ client.inventarioDelete({id: 1}, printReply)
+      
+Actualizar producto
+
+      $ client.inventarioUpdate({id:1, nombre: "chicle", descripcion: "masticable :)", precio:5}, printReply)
+
+
+      
