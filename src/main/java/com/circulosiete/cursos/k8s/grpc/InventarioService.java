@@ -1,4 +1,4 @@
-package com.circulosiete.cursos.k8s.warehouse;
+package com.circulosiete.cursos.k8s.grpc;
 
 import com.circulosiete.cursos.k8s.*;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
