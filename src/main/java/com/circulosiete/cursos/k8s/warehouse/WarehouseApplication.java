@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableGRpcServer
-public class InventarioServer {
+public class WarehouseApplication {
   public static void main(String[] args) {
-    SpringApplication.run(InventarioServer.class, args);
+    SpringApplication.run(WarehouseApplication.class, args);
   }
 }
