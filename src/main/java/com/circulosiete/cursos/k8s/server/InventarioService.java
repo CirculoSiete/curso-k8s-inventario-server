@@ -33,10 +33,12 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
 
   @Override
   public void inventarioCreate(InventarioRequest request, StreamObserver<InventarioResponse> responseObserver) {
-    boolean aceptado = false;
-    // se guarda en postgres
-    if (validacion.createValidacion(request.getNombre())) {
-      log.info("es valido");
+
+    boolean aceptado = validacion.createValidacion(request.getNombre());
+
+    log.info("Se aceoto el producto? {}", aceptado);
+
+    if (aceptado) {
 
       Product product = Product.builder()
         .name(request.getNombre())
@@ -59,11 +61,6 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
 
       // mandar a cola de rabbit
       sender.sendToRabbitmq(gson.toJson(queueJson));
-
-      aceptado = true;
-    } else {
-      System.out.println("no es valido");
-      aceptado = false;
     }
 
     // se manda respuesta cliente GRPC
@@ -77,10 +74,8 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
 
   @Override
   public void inventarioDelete(IdRequest request, StreamObserver<InventarioResponse> responseObserver) {
-    // se borra en postgres
     Product product = productoRepository.findOne(request.getId());
     productoRepository.delete(request.getId());
-    // productoRepository.delete();
 
     // se crea json para encolar
     JsonObject queueObject = new JsonObject();
@@ -95,7 +90,6 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
     queueJson.add("data", queueObject);
 
     // mandar a cola de rabbit
-    System.out.println(gson.toJson(queueJson));
     sender.sendToRabbitmq(gson.toJson(queueJson));
 
     // se manda respuesta cliente GRPC

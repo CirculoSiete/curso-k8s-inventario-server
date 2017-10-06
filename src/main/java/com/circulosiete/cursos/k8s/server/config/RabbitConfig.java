@@ -13,12 +13,12 @@ public class RabbitConfig {
 
   @Bean
   Queue queueMessage() {
-    return new Queue("index.queue", false);
+    return new Queue("index.queue");
   }
 
   @Bean
   Queue queueMessages() {
-    return new Queue("index.queue", false);
+    return new Queue("index.queue");
   }
 
   @Bean
