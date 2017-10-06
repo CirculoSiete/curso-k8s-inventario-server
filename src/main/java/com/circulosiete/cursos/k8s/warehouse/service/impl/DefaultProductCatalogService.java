@@ -1,7 +1,10 @@
-package com.circulosiete.cursos.k8s.warehouse.service;
+package com.circulosiete.cursos.k8s.warehouse.service.impl;
 
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
 import com.circulosiete.cursos.k8s.warehouse.repo.ProductRepository;
+import com.circulosiete.cursos.k8s.warehouse.service.ProductCatalogService;
+import com.circulosiete.cursos.k8s.warehouse.service.Sender;
+import com.circulosiete.cursos.k8s.warehouse.service.ValidacionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +14,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @Transactional
-public class DefaultProductCatalogService {
+public class DefaultProductCatalogService implements ProductCatalogService {
   private final Sender sender;
   private final ProductRepository productRepository;
   private final ValidacionService validacionService;
@@ -22,6 +25,7 @@ public class DefaultProductCatalogService {
     this.validacionService = validacionService;
   }
 
+  @Override
   public Optional<Product> add(Product newProduct) {
     boolean aceptado = validacionService.createValidacion(newProduct.getName());
 
@@ -53,6 +57,7 @@ public class DefaultProductCatalogService {
     }
   }
 
+  @Override
   public void delete(Long productId) {
     productRepository.delete(productId);
 
@@ -75,6 +80,7 @@ public class DefaultProductCatalogService {
     */
   }
 
+  @Override
   public Product update(Long productId, Product newData) {
     // se busca y actualiza
     Product product = productRepository.findOne(productId);

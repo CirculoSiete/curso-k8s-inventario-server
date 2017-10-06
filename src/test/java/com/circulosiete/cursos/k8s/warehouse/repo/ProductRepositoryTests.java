@@ -1,6 +1,7 @@
 package com.circulosiete.cursos.k8s.warehouse.repo;
 
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
+import com.circulosiete.cursos.k8s.warehouse.service.ProductCatalogService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class ProductRepositoryTests {
   private TestEntityManager entityManager;
   @Autowired
   private ProductRepository productRepository;
+  //@Autowired
+  private ProductCatalogService productCatalogService;
 
 
   @Test
@@ -39,6 +42,8 @@ public class ProductRepositoryTests {
     // then
     assertThat(found.getName())
       .isEqualTo(tenis.getName());
+
+    productCatalogService.delete(id);
   }
 
 

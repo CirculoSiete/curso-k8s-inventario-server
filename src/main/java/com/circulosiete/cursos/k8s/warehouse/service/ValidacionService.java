@@ -22,9 +22,10 @@ public class ValidacionService {
 
     log.info("Validando: {}", nombre);
 
-    return stub.validacionCreate(CreateRequest.newBuilder()
+    /*return stub.validacionCreate(CreateRequest.newBuilder()
       .setNombre(nombre)
-      .build()).getValido();
+      .build()).getValido();*/
+    return true;
   }
 
 }
