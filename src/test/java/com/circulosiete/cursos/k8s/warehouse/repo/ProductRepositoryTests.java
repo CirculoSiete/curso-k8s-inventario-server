@@ -22,7 +22,7 @@ public class ProductRepositoryTests {
 
 
   @Test
-  public void whenFindByName_thenReturnEmployee() {
+  public void whenFindByName_thenReturnProduct() {
     // given
     Product tenis = Product.builder()
       .description("Unos tenis")
