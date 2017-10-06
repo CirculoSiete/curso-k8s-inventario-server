@@ -10,7 +10,14 @@ Una vez construida, se puede proceder a levantar todo el ambiente (PostgreSQL, R
 
       $ docker-compose up --build
       
-### Grpcc
+### Probar el servicio con un cliente de linea de comandos (CLI)
+
+Se recomienda usar [`grpcc`](https://github.com/njpatel/grpcc) para poder probar el servicio en la linea de comandos. Se instala como un modulo de Node.
+
+
+
+Una vez con `grpcc` instalado, se puede proceder a probar.
+
 Iniciar cliente:
 
       $ grpcc -p src/main/proto/InventarioService.proto -a 127.0.0.1:6565 -s InventarioService -i
