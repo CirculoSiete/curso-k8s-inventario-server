@@ -6,7 +6,7 @@ import com.circulosiete.cursos.k8s.warehouse.repo.ProductRepository;
 import com.circulosiete.cursos.k8s.warehouse.service.ProductCatalogService;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
-import org.grpc.spring.boot.autoconfigure.annotation.GRpcService;
+import org.lognet.springboot.grpc.GRpcService;
 
 import java.math.BigDecimal;
 

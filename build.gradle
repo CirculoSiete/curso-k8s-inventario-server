@@ -75,7 +75,6 @@ dependencyManagement {
       entry 'grpc-protobuf'
       entry 'grpc-stub'
     }
-    dependency 'ru.alfalab.grpc.spring:starter:0.6.1'
     dependency "com.google.protobuf:protobuf-java:$protobufVersion"
   }
 }
@@ -86,7 +85,7 @@ dependencies {
   compile 'io.grpc:grpc-netty'
   compile 'org.springframework.boot:spring-boot-starter-actuator'
   compile 'org.springframework.boot:spring-boot-starter-amqp'
-  compile 'ru.alfalab.grpc.spring:starter'
+  compile('org.lognet:grpc-spring-boot-starter:2.1.0')
   compile 'com.google.code.gson:gson:2.8.2'
 
   compile 'org.postgresql:postgresql:42.1.4'
