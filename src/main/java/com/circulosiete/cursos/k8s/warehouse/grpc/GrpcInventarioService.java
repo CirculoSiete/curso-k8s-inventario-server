@@ -1,4 +1,4 @@
-package com.circulosiete.cursos.k8s.grpc;
+package com.circulosiete.cursos.k8s.warehouse.grpc;
 
 import com.circulosiete.cursos.k8s.*;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
@@ -66,6 +66,7 @@ public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServi
       .setDescripcion(product.getDescription())
       .setPrecio(product.getPrice().intValue())
       .build());
+
     // se cierra canal GRPC
     responseObserver.onCompleted();
   }
