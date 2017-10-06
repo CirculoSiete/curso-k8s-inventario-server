@@ -3,7 +3,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.1'
+    classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
     classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE'
     classpath 'com.bmuschko:gradle-docker-plugin:3.2.0'
     classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
@@ -59,8 +59,8 @@ task pushImage(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
 createDockerfile.dependsOn bootRepackage
 
 ext {
-  grpcVersion = '1.1.2'
-  protobufVersion = '3.2.0'
+  grpcVersion = '1.6.1'
+  protobufVersion = '3.4.0'
   protoGenDir = file('generated-src/')
 }
 
@@ -93,10 +93,10 @@ dependencies {
 
   compileOnly 'org.projectlombok:lombok'
 
-  testCompile 'org.codehaus.groovy:groovy-all'
+  testCompile 'org.codehaus.groovy:groovy-all:2.6.0-alpha-1'
   testCompile 'org.springframework.boot:spring-boot-starter-test'
-  testCompile 'org.spockframework:spock-core'
-  testCompile 'org.spockframework:spock-spring'
+  testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+  testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
   testCompile 'com.h2database:h2:1.4.196'
 }
 
