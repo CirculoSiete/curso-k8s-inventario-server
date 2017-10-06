@@ -1,4 +1,4 @@
-package com.circulosiete.cursos.k8s.server.config;
+package com.circulosiete.cursos.k8s.warehouse.config;
 
 
 import org.springframework.amqp.core.Binding;

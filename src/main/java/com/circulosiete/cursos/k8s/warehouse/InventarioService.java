@@ -1,10 +1,10 @@
-package com.circulosiete.cursos.k8s.server;
+package com.circulosiete.cursos.k8s.warehouse;
 
 import com.circulosiete.cursos.k8s.*;
-import com.circulosiete.cursos.k8s.server.model.Product;
-import com.circulosiete.cursos.k8s.server.repo.ProductoRepository;
-import com.circulosiete.cursos.k8s.server.service.Sender;
-import com.circulosiete.cursos.k8s.server.service.ValidacionService;
+import com.circulosiete.cursos.k8s.warehouse.model.Product;
+import com.circulosiete.cursos.k8s.warehouse.repo.ProductoRepository;
+import com.circulosiete.cursos.k8s.warehouse.service.Sender;
+import com.circulosiete.cursos.k8s.warehouse.service.ValidacionService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

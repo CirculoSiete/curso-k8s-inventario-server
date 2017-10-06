@@ -1,4 +1,4 @@
-package com.circulosiete.cursos.k8s.server.service;
+package com.circulosiete.cursos.k8s.warehouse.service;
 
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +11,9 @@ public class Sender {
   @Autowired
   private RabbitMessagingTemplate rabbitMessagingTemplate;
 
-  public void sendToRabbitmq(String msg){
+  public void sendToRabbitmq(String msg) {
     this.rabbitMessagingTemplate.convertAndSend("exchange", "index.queue", msg);
   }
-
 
 
 }

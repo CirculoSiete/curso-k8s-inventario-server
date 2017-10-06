@@ -1,10 +1,8 @@
-package com.circulosiete.cursos.k8s.server;
+package com.circulosiete.cursos.k8s.warehouse;
 
-import org.springframework.boot.SpringApplication;
 import org.grpc.spring.boot.autoconfigure.annotation.EnableGRpcServer;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import javax.annotation.PreDestroy;
 
 @SpringBootApplication
 @EnableGRpcServer

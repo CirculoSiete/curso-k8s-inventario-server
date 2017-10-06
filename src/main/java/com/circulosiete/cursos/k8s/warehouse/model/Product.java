@@ -1,4 +1,4 @@
-package com.circulosiete.cursos.k8s.server.model;
+package com.circulosiete.cursos.k8s.warehouse.model;
 
 import lombok.Builder;
 import lombok.Getter;
