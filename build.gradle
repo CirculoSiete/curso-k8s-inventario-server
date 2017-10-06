@@ -41,7 +41,7 @@ task createDockerfile(type: com.bmuschko.gradle.docker.tasks.image.Dockerfile) {
   from 'openjdk:8u141-jre'
   maintainer 'Miguel Angel Medina Mondragon "miguel@circulosiete.com"'
   copyFile 'service.jar', '/opt/service.jar'
-  exposePort 6565
+  exposePort 6565, 8081
   entryPoint 'java', "-Djava.awt.headless=true", "-Xms128m", "-Xmx128m", '-jar', '/opt/service.jar'
 }
 
