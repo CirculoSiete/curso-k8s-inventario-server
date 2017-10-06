@@ -2,12 +2,10 @@ package com.circulosiete.cursos.k8s.warehouse.service;
 
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
 import com.circulosiete.cursos.k8s.warehouse.repo.ProductoRepository;
-import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 @Slf4j
