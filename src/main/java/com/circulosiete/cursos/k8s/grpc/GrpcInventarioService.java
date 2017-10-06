@@ -18,14 +18,14 @@ import java.math.BigDecimal;
 
 @Slf4j
 @GRpcService
-public class InventarioService extends InventarioServiceGrpc.InventarioServiceImplBase {
+public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServiceImplBase {
 
   private final Sender sender;
   private ProductoRepository productoRepository;
   private ValidacionService validacionService;
   private Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
-  public InventarioService(Sender sender, ProductoRepository productoRepository, ValidacionService validacionService) {
+  public GrpcInventarioService(Sender sender, ProductoRepository productoRepository, ValidacionService validacionService) {
     this.sender = sender;
     this.productoRepository = productoRepository;
     this.validacionService = validacionService;
