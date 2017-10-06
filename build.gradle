@@ -98,6 +98,7 @@ dependencies {
   testCompile 'org.springframework.boot:spring-boot-starter-test'
   testCompile 'org.spockframework:spock-core'
   testCompile 'org.spockframework:spock-spring'
+  testCompile 'com.h2database:h2:1.4.196'
 }
 
 sourceSets {
