@@ -21,4 +21,13 @@ Para correr la aplicacion con Docker Compose, es requisito primero construir la 
 
       $ ./gradlew clean buildImage
       $ docker-compose up --build
+      
+### Grpcc
+Iniciar cliente:
+
+      $ grpcc -p InventarioService.proto -a 127.0.0.1:6565 -s InventarioService -i
+      
+Crear producto:
+
+      $ client.inventarioCreate({nombre: "chicle", descripcion: "masticable", precio:5}, printReply)
 
