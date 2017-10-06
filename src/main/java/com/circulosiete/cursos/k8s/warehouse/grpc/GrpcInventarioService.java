@@ -2,7 +2,7 @@ package com.circulosiete.cursos.k8s.warehouse.grpc;
 
 import com.circulosiete.cursos.k8s.*;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
-import com.circulosiete.cursos.k8s.warehouse.repo.ProductoRepository;
+import com.circulosiete.cursos.k8s.warehouse.repo.ProductRepository;
 import com.circulosiete.cursos.k8s.warehouse.service.ProductCatalogService;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +16,11 @@ import java.math.BigDecimal;
 public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServiceImplBase {
 
   private final ProductCatalogService productCatalogService;
-  private final ProductoRepository productoRepository;
+  private final ProductRepository productRepository;
 
-  public GrpcInventarioService(ProductCatalogService productCatalogService, ProductoRepository productoRepository) {
+  public GrpcInventarioService(ProductCatalogService productCatalogService, ProductRepository productRepository) {
     this.productCatalogService = productCatalogService;
-    this.productoRepository = productoRepository;
+    this.productRepository = productRepository;
   }
 
   @Override
@@ -57,7 +57,7 @@ public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServi
   @Override
   public void inventarioGet(IdRequest request, StreamObserver<GetResponse> responseObserver) {
     // se obtiene en postgres
-    Product product = productoRepository.findOne(request.getId());
+    Product product = productRepository.findOne(request.getId());
 
     // se manda respuesta cliente GRPC
     responseObserver.onNext(GetResponse.newBuilder()

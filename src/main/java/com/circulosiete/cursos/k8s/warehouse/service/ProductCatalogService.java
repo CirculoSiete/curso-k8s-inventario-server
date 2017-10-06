@@ -1,7 +1,7 @@
 package com.circulosiete.cursos.k8s.warehouse.service;
 
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
-import com.circulosiete.cursos.k8s.warehouse.repo.ProductoRepository;
+import com.circulosiete.cursos.k8s.warehouse.repo.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,12 +13,12 @@ import java.util.Optional;
 @Transactional
 public class ProductCatalogService {
   private final Sender sender;
-  private final ProductoRepository productoRepository;
+  private final ProductRepository productRepository;
   private final ValidacionService validacionService;
 
-  public ProductCatalogService(Sender sender, ProductoRepository productoRepository, ValidacionService validacionService) {
+  public ProductCatalogService(Sender sender, ProductRepository productRepository, ValidacionService validacionService) {
     this.sender = sender;
-    this.productoRepository = productoRepository;
+    this.productRepository = productRepository;
     this.validacionService = validacionService;
   }
 
@@ -29,7 +29,7 @@ public class ProductCatalogService {
 
 
     if (aceptado) {
-      return Optional.of(productoRepository.save(newProduct));
+      return Optional.of(productRepository.save(newProduct));
 
       //TODO: el siguiente bloque de codigo, debe ir en un interceptor de JPA
       /*
@@ -54,7 +54,7 @@ public class ProductCatalogService {
   }
 
   public void delete(Long productId) {
-    productoRepository.delete(productId);
+    productRepository.delete(productId);
 
     //TODO: el siguiente bloque de codigo, debe ir en un interceptor de JPA
       /*
@@ -77,11 +77,11 @@ public class ProductCatalogService {
 
   public Product update(Long productId, Product newData) {
     // se busca y actualiza
-    Product product = productoRepository.findOne(productId);
+    Product product = productRepository.findOne(productId);
     product.setName(newData.getName());
     product.setDescription(newData.getDescription());
     product.setPrice(newData.getPrice());
-    return productoRepository.save(product);
+    return productRepository.save(product);
 
     //TODO: el siguiente bloque de codigo, debe ir en un interceptor de JPA
     /*
