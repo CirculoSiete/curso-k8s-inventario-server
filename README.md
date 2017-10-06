@@ -24,19 +24,20 @@ Iniciar cliente:
       
 Crear producto:
 
-      $ client.inventarioCreate({nombre: "chicle", descripcion: "masticable", precio:5}, printReply)
+      $ client.create({nombre: "chicle", descripcion: "masticable", precio:5}, printReply)
 
 Obtener producto:
 
-      $ client.inventarioGet({id: 1}, printReply)
-      
-Eliminar producto:
-
-      $ client.inventarioDelete({id: 1}, printReply)
+      $ client.read({id: 1}, printReply)
       
 Actualizar producto
 
-      $ client.inventarioUpdate({id:1, nombre: "chicle", descripcion: "masticable :)", precio:5}, printReply)
+      $ client.update({id:1, nombre: "chicle", descripcion: "masticable :)", precio:5}, printReply)
+      
+Eliminar producto:
+
+      $ client.delete({id: 1}, printReply)
+      
 
 
       

@@ -21,7 +21,7 @@ public class ProductRepositoryTests {
   @Autowired
   private ProductRepository productRepository;
   //@Autowired
-  private ProductCatalogService productCatalogService;
+  //private ProductCatalogService productCatalogService;
 
 
   @Test
@@ -43,7 +43,7 @@ public class ProductRepositoryTests {
     assertThat(found.getName())
       .isEqualTo(tenis.getName());
 
-    productCatalogService.delete(id);
+    //productCatalogService.delete(id);
   }
 
 

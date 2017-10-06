@@ -1,9 +1,9 @@
 syntax = "proto3";
 
 package com.circulosiete.cursos.k8s;
-option java_multiple_files= true;
+option java_multiple_files = true;
 
-message InventarioRequest {
+message ProductRequest {
   string nombre = 1;
   int32 precio = 2;
   string descripcion = 3;
@@ -13,16 +13,13 @@ message IdRequest {
   int64 id = 1;
 }
 
-message GetResponse {
+message ProductResponse {
   int64 id = 1;
   string nombre = 2;
   string descripcion = 3;
   int32 precio = 4;
 }
 
-message InventarioResponse {
-  bool aceptado = 1;
-}
 
 message ValidacionResponse {
   bool valido = 1;
@@ -32,12 +29,11 @@ message CreateRequest {
   string nombre = 1;
 }
 
-service  InventarioService {
-  rpc InventarioCreate (InventarioRequest) returns (InventarioResponse);
-  rpc InventarioGet (IdRequest) returns (GetResponse);
-  rpc InventarioDelete (IdRequest) returns (InventarioResponse);
-  rpc InventarioUpdate (GetResponse) returns (InventarioResponse);
-
+service InventarioService {
+  rpc Create (ProductRequest) returns (ProductResponse);
+  rpc Read (IdRequest) returns (ProductResponse);
+  rpc Update (ProductResponse) returns (ProductResponse);
+  rpc Delete (IdRequest) returns (ProductResponse);
 }
 
 service ValidacionService {

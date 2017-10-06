@@ -1,6 +1,9 @@
 package com.circulosiete.cursos.k8s.warehouse.grpc;
 
-import com.circulosiete.cursos.k8s.*;
+import com.circulosiete.cursos.k8s.IdRequest;
+import com.circulosiete.cursos.k8s.InventarioServiceGrpc;
+import com.circulosiete.cursos.k8s.ProductRequest;
+import com.circulosiete.cursos.k8s.ProductResponse;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
 import com.circulosiete.cursos.k8s.warehouse.repo.ProductRepository;
 import com.circulosiete.cursos.k8s.warehouse.service.ProductCatalogService;
@@ -9,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 
 @Slf4j
@@ -23,71 +27,81 @@ public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServi
     this.productRepository = productRepository;
   }
 
-  @Override
-  public void inventarioCreate(InventarioRequest request, StreamObserver<InventarioResponse> responseObserver) {
-
-    Product product = Product.builder()
-      .name(request.getNombre())
+  public Product from(ProductRequest request) {
+    return Product.builder()
       .description(request.getDescripcion())
+      .name(request.getNombre())
       .price(BigDecimal.valueOf(request.getPrecio()))
       .build();
+  }
 
-    // se manda respuesta cliente GRPC
-    responseObserver.onNext(InventarioResponse.newBuilder()
-      .setAceptado(productCatalogService.add(product).isPresent())
-      .build());
+  public Product from(ProductResponse request) {
+    return Product.builder()
+      .description(request.getDescripcion())
+      .name(request.getNombre())
+      .price(BigDecimal.valueOf(request.getPrecio()))
+      .build();
+  }
+
+  public ProductResponse from(Product product) {
+    return ProductResponse.newBuilder()
+      .setNombre(product.getName())
+      .setId(product.getId())
+      .setDescripcion(product.getDescription())
+      .setPrecio(product.getPrice().intValue())
+      .build();
+
+  }
+
+  @Override
+  public void create(ProductRequest request, StreamObserver<ProductResponse> responseObserver) {
+    Product product = from(request);
+
+    Optional<Product> potencialNewProduct = productCatalogService.add(product);
+
+    potencialNewProduct.ifPresent(newProduct -> {
+      responseObserver.onNext(from(newProduct));
+    });
 
     // se cierra canal GRPC
     responseObserver.onCompleted();
   }
 
   @Override
-  public void inventarioDelete(IdRequest request, StreamObserver<InventarioResponse> responseObserver) {
-    productCatalogService.delete(request.getId());
-
-    // se manda respuesta cliente GRPC
-    responseObserver.onNext(InventarioResponse.newBuilder()
-      .setAceptado(true)
-      .build());
-
-    // se cierra canal GRPC
-    responseObserver.onCompleted();
-  }
-
-  @Override
-  public void inventarioGet(IdRequest request, StreamObserver<GetResponse> responseObserver) {
-    // se obtiene en postgres
+  public void read(IdRequest request, StreamObserver<ProductResponse> responseObserver) {
     Product product = productRepository.findOne(request.getId());
 
     // se manda respuesta cliente GRPC
-    responseObserver.onNext(GetResponse.newBuilder()
-      .setId(product.getId())
-      .setNombre(product.getName())
-      .setDescripcion(product.getDescription())
-      .setPrecio(product.getPrice().intValue())
-      .build());
+    responseObserver.onNext(from(product));
 
     // se cierra canal GRPC
     responseObserver.onCompleted();
   }
 
   @Override
-  public void inventarioUpdate(GetResponse request, StreamObserver<InventarioResponse> responseObserver) {
-    Product product = Product.builder()
-      .name(request.getNombre())
-      .description(request.getDescripcion())
-      .price(BigDecimal.valueOf(request.getPrecio()))
-      .build();
+  public void update(ProductResponse request, StreamObserver<ProductResponse> responseObserver) {
+    Product product = from(request);
 
-    productCatalogService.update(request.getId(), product);
+    Product result = productCatalogService.update(request.getId(), product);
 
     // se manda respuesta cliente GRPC
-    responseObserver.onNext(InventarioResponse.newBuilder()
-      .setAceptado(true)
-      .build());
+    responseObserver.onNext(from(result));
 
     // se cierra canal GRPC
     responseObserver.onCompleted();
-
   }
+
+  @Override
+  public void delete(IdRequest request, StreamObserver<ProductResponse> responseObserver) {
+
+    Product deleted = productCatalogService.delete(request.getId());
+
+    // se manda respuesta cliente GRPC
+    responseObserver.onNext(from(deleted));
+
+    // se cierra canal GRPC
+    responseObserver.onCompleted();
+  }
+
+
 }

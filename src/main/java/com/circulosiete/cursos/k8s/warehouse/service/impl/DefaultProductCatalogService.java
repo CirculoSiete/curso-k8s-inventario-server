@@ -58,8 +58,10 @@ public class DefaultProductCatalogService implements ProductCatalogService {
   }
 
   @Override
-  public void delete(Long productId) {
-    productRepository.delete(productId);
+  public Product delete(Long productId) {
+    Product deleted = productRepository.findOne(productId);
+    productRepository.delete(deleted);
+    return deleted;
 
     //TODO: el siguiente bloque de codigo, debe ir en un interceptor de JPA
       /*

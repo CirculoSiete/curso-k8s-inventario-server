@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface ProductCatalogService {
   Optional<Product> add(Product newProduct);
 
-  void delete(Long productId);
+  Product delete(Long productId);
 
   Product update(Long productId, Product newData);
 }
