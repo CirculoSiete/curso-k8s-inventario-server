@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class Validacion {
+public class ValidacionService {
 
   //TODO: remover el codigo duro. Estos valores deben ir en configuracion
   private ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 7070)

@@ -4,7 +4,7 @@ import com.circulosiete.cursos.k8s.*;
 import com.circulosiete.cursos.k8s.server.model.Product;
 import com.circulosiete.cursos.k8s.server.repo.ProductoRepository;
 import com.circulosiete.cursos.k8s.server.service.Sender;
-import com.circulosiete.cursos.k8s.server.service.Validacion;
+import com.circulosiete.cursos.k8s.server.service.ValidacionService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,19 +22,19 @@ public class InventarioService extends InventarioServiceGrpc.InventarioServiceIm
 
   private final Sender sender;
   private ProductoRepository productoRepository;
-  private Validacion validacion;
+  private ValidacionService validacionService;
   private Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
-  public InventarioService(Sender sender, ProductoRepository productoRepository, Validacion validacion) {
+  public InventarioService(Sender sender, ProductoRepository productoRepository, ValidacionService validacionService) {
     this.sender = sender;
     this.productoRepository = productoRepository;
-    this.validacion = validacion;
+    this.validacionService = validacionService;
   }
 
   @Override
   public void inventarioCreate(InventarioRequest request, StreamObserver<InventarioResponse> responseObserver) {
 
-    boolean aceptado = validacion.createValidacion(request.getNombre());
+    boolean aceptado = validacionService.createValidacion(request.getNombre());
 
     log.info("Se aceoto el producto? {}", aceptado);
 
