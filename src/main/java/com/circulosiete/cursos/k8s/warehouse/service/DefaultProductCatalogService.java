@@ -11,12 +11,12 @@ import java.util.Optional;
 @Slf4j
 @Service
 @Transactional
-public class ProductCatalogService {
+public class DefaultProductCatalogService {
   private final Sender sender;
   private final ProductRepository productRepository;
   private final ValidacionService validacionService;
 
-  public ProductCatalogService(Sender sender, ProductRepository productRepository, ValidacionService validacionService) {
+  public DefaultProductCatalogService(Sender sender, ProductRepository productRepository, ValidacionService validacionService) {
     this.sender = sender;
     this.productRepository = productRepository;
     this.validacionService = validacionService;

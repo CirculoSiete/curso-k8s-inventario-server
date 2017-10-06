@@ -3,7 +3,7 @@ package com.circulosiete.cursos.k8s.warehouse.grpc;
 import com.circulosiete.cursos.k8s.*;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
 import com.circulosiete.cursos.k8s.warehouse.repo.ProductRepository;
-import com.circulosiete.cursos.k8s.warehouse.service.ProductCatalogService;
+import com.circulosiete.cursos.k8s.warehouse.service.DefaultProductCatalogService;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
@@ -15,10 +15,10 @@ import java.math.BigDecimal;
 @GRpcService
 public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServiceImplBase {
 
-  private final ProductCatalogService productCatalogService;
+  private final DefaultProductCatalogService productCatalogService;
   private final ProductRepository productRepository;
 
-  public GrpcInventarioService(ProductCatalogService productCatalogService, ProductRepository productRepository) {
+  public GrpcInventarioService(DefaultProductCatalogService productCatalogService, ProductRepository productRepository) {
     this.productCatalogService = productCatalogService;
     this.productRepository = productRepository;
   }
