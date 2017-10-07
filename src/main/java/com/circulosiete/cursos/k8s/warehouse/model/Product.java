@@ -35,6 +35,7 @@ public class Product {
 
   private String description;
 
+  //TODO: mejorar mapping para mayor precision
   private BigDecimal price;
 
   @Column(name = "created_date", updatable = false)

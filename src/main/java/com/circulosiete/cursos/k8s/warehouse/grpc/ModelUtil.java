@@ -3,9 +3,11 @@ package com.circulosiete.cursos.k8s.warehouse.grpc;
 import com.circulosiete.cursos.k8s.ProductModel;
 import com.circulosiete.cursos.k8s.ProductRequest;
 import com.circulosiete.cursos.k8s.ProductResponse;
+import com.circulosiete.cursos.k8s.Timestamp;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Optional;
 
 public class ModelUtil {
@@ -13,7 +15,7 @@ public class ModelUtil {
     return Product.builder()
       .description(request.getDescripcion())
       .name(request.getNombre())
-      .price(BigDecimal.valueOf(request.getPrecio()))
+      .price(new BigDecimal(request.getPrecio()))
       .build();
   }
 
@@ -21,7 +23,7 @@ public class ModelUtil {
     return Product.builder()
       .description(request.getDescripcion())
       .name(request.getNombre())
-      .price(BigDecimal.valueOf(request.getPrecio()))
+      .price(new BigDecimal(request.getPrecio()))
       .build();
   }
 
@@ -38,12 +40,22 @@ public class ModelUtil {
         .setNombre(product.getName())
         .setId(product.getId())
         .setDescripcion(product.getDescription())
-        .setPrecio(product.getPrice().intValue())
+        .setPrecio(product.getPrice().toString())
+        .setCreatedAt(from(product.getCreatedDate()))
+        .setModifiedDate(from(product.getModifiedDate()))
         .build();
 
       builderResponse.setProduct(productModel);
     });
 
     return builderResponse.build();
+  }
+
+  public static Timestamp from(Date date) {
+    long millis = date.getTime();
+    return Timestamp.newBuilder()
+      .setSeconds(millis / 1000)
+      .setNanos((int) ((millis % 1000) * 1000000))
+      .build();
   }
 }
