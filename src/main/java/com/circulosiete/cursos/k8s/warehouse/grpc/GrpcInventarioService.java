@@ -11,8 +11,9 @@ import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 
-import java.math.BigDecimal;
 import java.util.Optional;
+
+import static com.circulosiete.cursos.k8s.warehouse.grpc.ModelUtil.from;
 
 
 @Slf4j
@@ -27,30 +28,6 @@ public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServi
     this.productRepository = productRepository;
   }
 
-  public Product from(ProductRequest request) {
-    return Product.builder()
-      .description(request.getDescripcion())
-      .name(request.getNombre())
-      .price(BigDecimal.valueOf(request.getPrecio()))
-      .build();
-  }
-
-  public Product from(ProductResponse request) {
-    return Product.builder()
-      .description(request.getDescripcion())
-      .name(request.getNombre())
-      .price(BigDecimal.valueOf(request.getPrecio()))
-      .build();
-  }
-
-  public ProductResponse from(Product product) {
-    return ProductResponse.newBuilder()
-      .setNombre(product.getName())
-      .setId(product.getId())
-      .setDescripcion(product.getDescription())
-      .setPrecio(product.getPrice().intValue())
-      .build();
-  }
 
   @Override
   public void create(ProductRequest request, StreamObserver<ProductResponse> responseObserver) {
