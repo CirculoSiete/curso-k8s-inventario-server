@@ -9,7 +9,7 @@ message ProductRequest {
   string descripcion = 3;
 }
 
-message IdRequest {
+message EntityId {
   int64 id = 1;
 }
 
@@ -19,7 +19,6 @@ message ProductResponse {
   string descripcion = 3;
   int32 precio = 4;
 }
-
 
 message ValidacionResponse {
   bool valido = 1;
@@ -31,12 +30,12 @@ message CreateRequest {
 
 service InventarioService {
   rpc Create (ProductRequest) returns (ProductResponse);
-  rpc Read (IdRequest) returns (ProductResponse);
+  rpc Read (EntityId) returns (ProductResponse);
   rpc Update (ProductResponse) returns (ProductResponse);
-  rpc Delete (IdRequest) returns (ProductResponse);
+  rpc Delete (EntityId) returns (ProductResponse);
 }
 
 service ValidacionService {
   rpc ValidacionCreate (CreateRequest) returns (ValidacionResponse);
-  rpc ValidacionDelete (IdRequest) returns (ValidacionResponse);
+  rpc ValidacionDelete (EntityId) returns (ValidacionResponse);
 }

@@ -1,6 +1,6 @@
 package com.circulosiete.cursos.k8s.warehouse.grpc;
 
-import com.circulosiete.cursos.k8s.IdRequest;
+import com.circulosiete.cursos.k8s.EntityId;
 import com.circulosiete.cursos.k8s.InventarioServiceGrpc;
 import com.circulosiete.cursos.k8s.ProductRequest;
 import com.circulosiete.cursos.k8s.ProductResponse;
@@ -50,7 +50,6 @@ public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServi
       .setDescripcion(product.getDescription())
       .setPrecio(product.getPrice().intValue())
       .build();
-
   }
 
   @Override
@@ -68,7 +67,7 @@ public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServi
   }
 
   @Override
-  public void read(IdRequest request, StreamObserver<ProductResponse> responseObserver) {
+  public void read(EntityId request, StreamObserver<ProductResponse> responseObserver) {
     Product product = productRepository.findOne(request.getId());
 
     // se manda respuesta cliente GRPC
@@ -92,7 +91,7 @@ public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServi
   }
 
   @Override
-  public void delete(IdRequest request, StreamObserver<ProductResponse> responseObserver) {
+  public void delete(EntityId request, StreamObserver<ProductResponse> responseObserver) {
 
     Product deleted = productCatalogService.delete(request.getId());
 
