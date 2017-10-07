@@ -13,11 +13,15 @@ message EntityId {
   int64 id = 1;
 }
 
-message ProductResponse {
+message ProductModel {
   int64 id = 1;
   string nombre = 2;
   string descripcion = 3;
   int32 precio = 4;
+}
+
+message ProductResponse {
+  ProductModel product = 1;
 }
 
 message ValidacionResponse {
@@ -31,7 +35,7 @@ message CreateRequest {
 service InventarioService {
   rpc Create (ProductRequest) returns (ProductResponse);
   rpc Read (EntityId) returns (ProductResponse);
-  rpc Update (ProductResponse) returns (ProductResponse);
+  rpc Update (ProductModel) returns (ProductResponse);
   rpc Delete (EntityId) returns (ProductResponse);
 }
 
