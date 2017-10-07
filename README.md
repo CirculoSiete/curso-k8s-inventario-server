@@ -20,7 +20,7 @@ Una vez con `grpcc` instalado, se puede proceder a probar.
 
 Iniciar cliente:
 
-      $ grpcc -p src/main/proto/InventarioService.proto -a 127.0.0.1:6565 -s InventarioService -i
+      $ grpcc -p src/main/proto/WarehouseService.proto -a 127.0.0.1:6565 -s ProductService -i
       
 Crear producto:
 
