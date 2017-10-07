@@ -12,7 +12,7 @@ import static com.circulosiete.cursos.k8s.warehouse.grpc.ModelUtil.from;
 
 @Slf4j
 @GRpcService
-public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServiceImplBase {
+public class GrpcInventarioService extends ProductServiceGrpc.ProductServiceImplBase {
 
   private final ProductCatalogService productCatalogService;
   private final ProductRepository productRepository;

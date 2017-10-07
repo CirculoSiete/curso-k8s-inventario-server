@@ -32,7 +32,7 @@ message CreateRequest {
   string nombre = 1;
 }
 
-service InventarioService {
+service ProductService {
   rpc Create (ProductRequest) returns (ProductResponse);
   rpc Read (EntityId) returns (ProductResponse);
   rpc Update (ProductModel) returns (ProductResponse);
