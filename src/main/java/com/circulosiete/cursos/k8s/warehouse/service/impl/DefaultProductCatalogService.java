@@ -29,7 +29,7 @@ public class DefaultProductCatalogService implements ProductCatalogService {
   public Optional<Product> add(Product newProduct) {
     boolean aceptado = validacionService.createValidacion(newProduct.getName());
 
-    log.info("Se aceoto el producto? {}", aceptado);
+    log.info("Se acepto el producto? {}", aceptado);
 
 
     if (aceptado) {
@@ -58,10 +58,12 @@ public class DefaultProductCatalogService implements ProductCatalogService {
   }
 
   @Override
-  public Product delete(Long productId) {
-    Product deleted = productRepository.findOne(productId);
-    productRepository.delete(deleted);
-    return deleted;
+  public Optional<Product> delete(Long productId) {
+
+    return productRepository.findById(productId).map(product -> {
+      productRepository.delete(product);
+      return product;
+    });
 
     //TODO: el siguiente bloque de codigo, debe ir en un interceptor de JPA
       /*
@@ -83,13 +85,15 @@ public class DefaultProductCatalogService implements ProductCatalogService {
   }
 
   @Override
-  public Product update(Long productId, Product newData) {
-    // se busca y actualiza
-    Product product = productRepository.findOne(productId);
-    product.setName(newData.getName());
-    product.setDescription(newData.getDescription());
-    product.setPrice(newData.getPrice());
-    return productRepository.save(product);
+  public Optional<Product> update(Long productId, Product newData) {
+
+    return productRepository.findById(productId).map(product -> {
+      product.setName(newData.getName());
+      product.setDescription(newData.getDescription());
+      product.setPrice(newData.getPrice());
+      return productRepository.save(product);
+    });
+
 
     //TODO: el siguiente bloque de codigo, debe ir en un interceptor de JPA
     /*

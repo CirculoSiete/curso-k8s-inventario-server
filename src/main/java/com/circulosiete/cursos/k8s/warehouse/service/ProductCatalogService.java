@@ -5,9 +5,14 @@ import com.circulosiete.cursos.k8s.warehouse.model.Product;
 import java.util.Optional;
 
 public interface ProductCatalogService {
+  /**
+   *
+   * @param newProduct
+   * @return
+   */
   Optional<Product> add(Product newProduct);
 
-  Product delete(Long productId);
+  Optional<Product> delete(Long productId);
 
-  Product update(Long productId, Product newData);
+  Optional<Product> update(Long productId, Product newData);
 }

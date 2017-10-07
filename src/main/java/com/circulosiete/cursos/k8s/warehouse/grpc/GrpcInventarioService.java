@@ -11,8 +11,6 @@ import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 
-import java.util.Optional;
-
 import static com.circulosiete.cursos.k8s.warehouse.grpc.ModelUtil.from;
 
 
@@ -31,26 +29,21 @@ public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServi
 
   @Override
   public void create(ProductRequest request, StreamObserver<ProductResponse> responseObserver) {
-    Product product = from(request);
 
-    Optional<Product> potencialNewProduct = productCatalogService.add(product);
+    productCatalogService.add(from(request))
+      .ifPresent(newProduct -> responseObserver.onNext(from(newProduct)));
 
-    potencialNewProduct.ifPresent(newProduct -> {
-      responseObserver.onNext(from(newProduct));
-    });
-
-    // se cierra canal GRPC
     responseObserver.onCompleted();
   }
 
   @Override
   public void read(EntityId request, StreamObserver<ProductResponse> responseObserver) {
-    Product product = productRepository.findOne(request.getId());
 
-    // se manda respuesta cliente GRPC
+    Product product = productRepository.findById(request.getId())
+      .orElse(null);
+
     responseObserver.onNext(from(product));
 
-    // se cierra canal GRPC
     responseObserver.onCompleted();
   }
 
@@ -58,26 +51,19 @@ public class GrpcInventarioService extends InventarioServiceGrpc.InventarioServi
   public void update(ProductResponse request, StreamObserver<ProductResponse> responseObserver) {
     Product product = from(request);
 
-    Product result = productCatalogService.update(request.getId(), product);
+    productCatalogService.update(request.getId(), product)
+      .ifPresent(product1 -> responseObserver.onNext(from(product1)));
 
-    // se manda respuesta cliente GRPC
-    responseObserver.onNext(from(result));
-
-    // se cierra canal GRPC
     responseObserver.onCompleted();
   }
 
   @Override
   public void delete(EntityId request, StreamObserver<ProductResponse> responseObserver) {
 
-    Product deleted = productCatalogService.delete(request.getId());
+    productCatalogService.delete(request.getId())
+      .ifPresent(product -> responseObserver.onNext(from(product)));
 
-    // se manda respuesta cliente GRPC
-    responseObserver.onNext(from(deleted));
-
-    // se cierra canal GRPC
     responseObserver.onCompleted();
   }
-
 
 }
