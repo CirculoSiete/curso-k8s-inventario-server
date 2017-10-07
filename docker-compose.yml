@@ -12,6 +12,11 @@ services:
     image: rabbitmq:3.6.12-management
     ports:
       - 15672:15672
+    environment:
+      # Por default, RabbitMQ en Docker, escribe el log en la salida estandar.
+      # Lo siguiente es para escribir los logs en archivos y evitar llenar la pantalla de logs.
+      RABBITMQ_LOGS: /var/log/rabbitmq/rabbit.log
+      RABBITMQ_SASL_LOGS: /var/log/rabbitmq/rabbit-sasl.log
   inventarioserver:
     build: build/libs
     ports:

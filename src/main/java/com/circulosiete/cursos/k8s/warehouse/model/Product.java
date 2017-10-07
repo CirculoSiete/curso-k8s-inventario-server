@@ -5,13 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Entity
 @Table(name = "products")
@@ -19,17 +16,12 @@ import java.util.Date;
 @Setter
 @Builder
 @Slf4j
-@EntityListeners(AuditingEntityListener.class)
-public class Product {
+public class Product extends BaseEntity {
 
   @Tolerate
   public Product() {
     log.debug("Creating a product!");
   }
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
 
   private String name;
 
@@ -37,13 +29,5 @@ public class Product {
 
   //TODO: mejorar mapping para mayor precision
   private BigDecimal price;
-
-  @Column(name = "created_date", updatable = false)
-  @CreatedDate
-  private Date createdDate;
-
-  @Column(name = "modified_date")
-  @LastModifiedDate
-  private Date modifiedDate;
 
 }

@@ -3,7 +3,6 @@ package com.circulosiete.cursos.k8s.warehouse.service.impl;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
 import com.circulosiete.cursos.k8s.warehouse.repo.ProductRepository;
 import com.circulosiete.cursos.k8s.warehouse.service.ProductCatalogService;
-import com.circulosiete.cursos.k8s.warehouse.service.Sender;
 import com.circulosiete.cursos.k8s.warehouse.service.ValidacionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,12 +14,10 @@ import java.util.Optional;
 @Service
 @Transactional
 public class DefaultProductCatalogService implements ProductCatalogService {
-  private final Sender sender;
   private final ProductRepository productRepository;
   private final ValidacionService validacionService;
 
-  public DefaultProductCatalogService(Sender sender, ProductRepository productRepository, ValidacionService validacionService) {
-    this.sender = sender;
+  public DefaultProductCatalogService(ProductRepository productRepository, ValidacionService validacionService) {
     this.productRepository = productRepository;
     this.validacionService = validacionService;
   }
@@ -31,27 +28,8 @@ public class DefaultProductCatalogService implements ProductCatalogService {
 
     log.info("Se acepto el producto? {}", aceptado);
 
-
     if (aceptado) {
       return Optional.of(productRepository.save(newProduct));
-
-      //TODO: el siguiente bloque de codigo, debe ir en un interceptor de JPA
-      /*
-
-      // se crea json para encolar
-      JsonObject queueObject = new JsonObject();
-      queueObject.addProperty("nombre", request.getNombre());
-      queueObject.addProperty("descripcion", request.getDescripcion());
-      queueObject.addProperty("precio", request.getPrecio());
-
-      JsonObject queueJson = new JsonObject();
-      queueJson.addProperty("tipo", "producto");
-      queueJson.addProperty("operacion", "alta");
-      queueJson.add("data", queueObject);
-
-      // mandar a cola de rabbit
-      sender.sendToRabbitmq(gson.toJson(queueJson));
-      */
     } else {
       return Optional.empty();
     }
@@ -65,23 +43,6 @@ public class DefaultProductCatalogService implements ProductCatalogService {
       return product;
     });
 
-    //TODO: el siguiente bloque de codigo, debe ir en un interceptor de JPA
-      /*
-    // se crea json para encolar
-    JsonObject queueObject = new JsonObject();
-    queueObject.addProperty("id", request.getId());
-    queueObject.addProperty("nombre", product.getName());
-    queueObject.addProperty("descripcion", product.getDescription());
-    queueObject.addProperty("precio", product.getPrice());
-
-    JsonObject queueJson = new JsonObject();
-    queueJson.addProperty("tipo", "product");
-    queueJson.addProperty("operacion", "borrado");
-    queueJson.add("data", queueObject);
-
-    // mandar a cola de rabbit
-    sender.sendToRabbitmq(gson.toJson(queueJson));
-    */
   }
 
   @Override
@@ -94,24 +55,5 @@ public class DefaultProductCatalogService implements ProductCatalogService {
       return productRepository.save(product);
     });
 
-
-    //TODO: el siguiente bloque de codigo, debe ir en un interceptor de JPA
-    /*
-    // se crea json para encolar
-    JsonObject queueObject = new JsonObject();
-    queueObject.addProperty("id", product.getId());
-    queueObject.addProperty("nombre", product.getName());
-    queueObject.addProperty("descripcion", product.getDescription());
-    queueObject.addProperty("precio", product.getPrice());
-
-    JsonObject queueJson = new JsonObject();
-    queueJson.addProperty("tipo", "product");
-    queueJson.addProperty("operacion", "actualizacion");
-    queueJson.add("data", queueObject);
-
-    // mandar a cola de rabbit
-    System.out.println(gson.toJson(queueJson));
-    sender.sendToRabbitmq(gson.toJson(queueJson));
-    */
   }
 }

@@ -18,9 +18,9 @@ message Timestamp {
 }
 
 message ProductRequest {
-  string nombre = 1;
-  string precio = 2;
-  string descripcion = 3;
+  string name = 1;
+  string price = 2;
+  string description = 3;
 }
 
 message EntityId {
@@ -29,11 +29,12 @@ message EntityId {
 
 message ProductModel {
   int64 id = 1;
-  string nombre = 2;
-  string descripcion = 3;
-  string precio = 4;
+  string name = 2;
+  string description = 3;
+  string price = 4;
   Timestamp createdAt = 5;
   Timestamp modifiedDate = 6;
+  int64 version = 7;
 }
 
 message ProductResponse {

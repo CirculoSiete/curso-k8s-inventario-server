@@ -1,4 +1,7 @@
 buildscript {
+  ext {
+    jadiraVersion = '5.0.0.GA'
+  }
   repositories {
     jcenter()
   }
@@ -90,6 +93,12 @@ dependencies {
 
   compile 'org.postgresql:postgresql:42.1.4'
   compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+
+  compile "joda-time:joda-time"
+  compile "org.jadira.usertype:usertype.extended:${jadiraVersion}"
+  compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+  compile 'org.javamoney:moneta:1.1'
 
   compileOnly 'org.projectlombok:lombok'
 

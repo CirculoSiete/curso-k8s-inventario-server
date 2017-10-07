@@ -24,7 +24,7 @@ Iniciar cliente:
       
 Crear producto:
 
-      $ client.create({nombre: "chicle", descripcion: "masticable", precio:5}, printReply)
+      $ client.create({name: "chicle", description: "masticable", price:"5"}, printReply)
 
 Obtener producto:
 
@@ -32,7 +32,7 @@ Obtener producto:
       
 Actualizar producto
 
-      $ client.update({id:1, nombre: "chicle", descripcion: "masticable :)", precio:5}, printReply)
+      $ client.update({id:1, name: "chicle", description: "masticable :)", price:"5"}, printReply)
       
 Eliminar producto:
 
