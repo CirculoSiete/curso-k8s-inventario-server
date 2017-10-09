@@ -57,13 +57,10 @@ public class ModelInterceptor implements PostInsertEventListener, PostUpdateEven
 
     Map props = objectMapper.convertValue(entity, Map.class);
 
-    Map payload = Collections.unmodifiableMap(
-      Stream.of(
-        entry("entity", (Object) entityName),
-        entry("event", (Object) event),
-        entry("data", (Object) props))
-        .collect(entriesToMap())
-    );
+    Map payload = from(
+      entry("entity", entityName),
+      entry("event", event),
+      entry("data", props));
 
     String json;
     try {
@@ -71,9 +68,18 @@ public class ModelInterceptor implements PostInsertEventListener, PostUpdateEven
       log.info("Se enviara: {}", json);
       rabbitMessagingTemplate.convertAndSend("exchange", "index.queue", json);
     } catch (JsonProcessingException e) {
+      //TODO: mejorar el manejo de esta excepcion
       log.error(e.getMessage(), e);
     }
 
+  }
+
+  //TODO: mover esto a otra clase de utileria
+  public static <K, U> Map<K, U> from(Map.Entry<K, U>... data) {
+    return Collections.unmodifiableMap(
+      Stream.of(data)
+        .collect(entriesToMap())
+    );
   }
 
   //TODO: mover esto a otra clase de utileria
