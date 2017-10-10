@@ -38,6 +38,20 @@ Eliminar producto:
 
       $ client.delete({id: 1}, printReply)
       
+Listar los productos
 
+* Paginación con defaults (Page=0, Size=100)
 
+      $ var productos = client.list({});
       
+* Paginación (Page=1, Size=3)
+      
+      $ var productos = client.list({page: 1, size: 3});
+      
+* Para obtener el stream de datos
+     
+      $ productos.on('data', function(p) { console.log(p); });
+      
+* Para saber cuando se termino el stream
+
+      $ productos.on('end', function() { console.log("No hay mas productos"); });

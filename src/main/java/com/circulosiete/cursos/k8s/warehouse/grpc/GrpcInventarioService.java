@@ -46,4 +46,13 @@ public class GrpcInventarioService extends ProductServiceGrpc.ProductServiceImpl
     responseObserver.onCompleted();
   }
 
+  @Override
+  public void list(Page request, StreamObserver<ProductResponse> responseObserver) {
+    productCatalogService.list(from(request),
+      productsStream -> productsStream.forEach(
+        product -> responseObserver.onNext(from(product))));
+
+    responseObserver.onCompleted();
+  }
+
 }

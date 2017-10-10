@@ -1,10 +1,9 @@
 package com.circulosiete.cursos.k8s.warehouse.grpc;
 
-import com.circulosiete.cursos.k8s.ProductModel;
-import com.circulosiete.cursos.k8s.ProductRequest;
-import com.circulosiete.cursos.k8s.ProductResponse;
-import com.circulosiete.cursos.k8s.Timestamp;
+import com.circulosiete.cursos.k8s.*;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -30,6 +29,10 @@ public class ModelUtil {
 
   public static Product from(ProductResponse request) {
     return from(request.getProduct());
+  }
+
+  public static ProductResponse from(Product found) {
+    return from(Optional.ofNullable(found));
   }
 
   public static ProductResponse from(Optional<Product> found) {
@@ -60,5 +63,23 @@ public class ModelUtil {
       .setSeconds(millis / 1000)
       .setNanos((int) ((millis % 1000) * 1000000))
       .build();
+  }
+
+  public static Pageable createPageRequest(Integer page, Integer size) {
+    int thePage = 0;
+    if (page != null) {
+      thePage = page;
+    }
+
+    int theSize = 10;
+    if (size != null && size > 0 && size <= 100) {
+      theSize = size;
+    }
+
+    return new PageRequest(thePage, theSize);
+  }
+
+  public static Pageable from(Page page) {
+    return createPageRequest(page.getPage(), page.getSize());
   }
 }

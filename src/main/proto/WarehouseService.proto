@@ -3,6 +3,11 @@ syntax = "proto3";
 package com.circulosiete.cursos.k8s;
 option java_multiple_files = true;
 
+message Page {
+  int32 page = 1;
+  int32 size = 2;
+}
+
 message Timestamp {
 
   // Represents seconds of UTC time since Unix epoch
@@ -41,6 +46,11 @@ message ProductResponse {
   ProductModel product = 1;
 }
 
+message ProductPageResponse {
+  Page page = 1;
+  ProductResponse product = 2;
+}
+
 message ValidacionResponse {
   bool valido = 1;
 }
@@ -54,6 +64,7 @@ service ProductService {
   rpc Read (EntityId) returns (ProductResponse);
   rpc Update (ProductModel) returns (ProductResponse);
   rpc Delete (EntityId) returns (ProductResponse);
+  rpc List (Page) returns (stream ProductResponse);
 }
 
 service ValidacionService {

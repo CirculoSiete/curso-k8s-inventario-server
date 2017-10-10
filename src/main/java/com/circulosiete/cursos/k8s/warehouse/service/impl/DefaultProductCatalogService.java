@@ -5,10 +5,13 @@ import com.circulosiete.cursos.k8s.warehouse.repo.ProductRepository;
 import com.circulosiete.cursos.k8s.warehouse.service.ProductCatalogService;
 import com.circulosiete.cursos.k8s.warehouse.service.ValidacionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -56,4 +59,12 @@ public class DefaultProductCatalogService implements ProductCatalogService {
     });
 
   }
+
+  @Override
+  public void list(Pageable page, Consumer<Stream<Product>> action) {
+    try (Stream<Product> productStream = productRepository.streamAllPaged(page)) {
+      action.accept(productStream);
+    }
+  }
+
 }
