@@ -11,3 +11,7 @@ spring:
     generate-ddl: true
 management:
   port: 8081
+
+validation-svc:
+  hostname: "localhost"
+  port: 7000
