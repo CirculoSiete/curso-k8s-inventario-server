@@ -62,7 +62,7 @@ task pushImage(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
 createDockerfile.dependsOn bootRepackage
 
 ext {
-  grpcVersion = '1.6.1'
+  grpcVersion = '1.7.0'
   protobufVersion = '3.4.0'
   protoGenDir = file('generated-src/')
 }
