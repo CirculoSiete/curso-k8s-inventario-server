@@ -4,6 +4,8 @@ services:
     build: postgres
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
   adminer:
     image: adminer:4.3.1
     ports:
@@ -11,6 +13,7 @@ services:
   rabbitmq:
     image: rabbitmq:3.6.12-management
     ports:
+      - 5672:5672
       - 15672:15672
     environment:
       # Por default, RabbitMQ en Docker, escribe el log en la salida estandar.
@@ -21,7 +24,19 @@ services:
     build: build/libs
     ports:
       - 6565:6565
-      - 8081:8081
+      - 8082:8081
     environment:
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse
+      VALIDATION-SVC_HOSTNAME: inventariovalidacion
+      VALIDATION-SVC_PORT: 7000
+  inventariovalidacion:
+    image: circulo7/cursos-k8s-inventario-validacion:1.0-snapshot
+    ports:
+      - 7000:7000
+      - 8081:8081
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      GRPC_PORT: 7000
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse
+
