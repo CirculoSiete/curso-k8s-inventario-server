@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package com.circulosiete.cursos.k8s;
+option java_multiple_files = true;
+
+message Page {
+  int32 page = 1;
+  int32 size = 2;
+}
+
+message Timestamp {
+
+  // Represents seconds of UTC time since Unix epoch
+  // 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
+  // 9999-12-31T23:59:59Z inclusive.
+  int64 seconds = 1;
+
+  // Non-negative fractions of a second at nanosecond resolution. Negative
+  // second values with fractions must still have non-negative nanos values
+  // that count forward in time. Must be from 0 to 999,999,999
+  // inclusive.
+  int32 nanos = 2;
+}
+
+message ProductRequest {
+  string name = 1;
+  string price = 2;
+  string description = 3;
+}
+
+message EntityId {
+  int64 id = 1;
+}
+
+message ProductModel {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string price = 4;
+  Timestamp createdAt = 5;
+  Timestamp modifiedDate = 6;
+  int64 version = 7;
+}
+
+message ProductResponse {
+  ProductModel product = 1;
+}
+
+message ProductPageResponse {
+  Page page = 1;
+  ProductResponse product = 2;
+}
+
+message ValidacionResponse {
+  bool valido = 1;
+}
+
+message CreateRequest {
+  string nombre = 1;
+}
+
+service ProductService {
+  rpc Create (ProductRequest) returns (ProductResponse);
+  rpc Read (EntityId) returns (ProductResponse);
+  rpc Update (ProductModel) returns (ProductResponse);
+  rpc Delete (EntityId) returns (ProductResponse);
+  rpc List (Page) returns (stream ProductResponse);
+}
+
+service ValidacionService {
+  rpc ValidacionCreate (CreateRequest) returns (ValidacionResponse);
+  rpc ValidacionDelete (EntityId) returns (ValidacionResponse);
+}
