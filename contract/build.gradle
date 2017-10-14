@@ -101,7 +101,7 @@ task cleanProtoGen {
 clean.dependsOn cleanProtoGen
 
 
-
+/*
 idea {
   module {
     sourceDirs += file('./src/main/proto')
@@ -131,4 +131,4 @@ idea {
       }
     }
   }
-}
+}*/
