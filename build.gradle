@@ -78,6 +78,7 @@ subprojects {
           entry 'grpc-netty'
           entry 'grpc-protobuf'
           entry 'grpc-stub'
+          entry 'grpc-services'
         }
         dependency "com.google.protobuf:protobuf-java:$protobufVersion"
       }
