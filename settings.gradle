@@ -16,6 +16,7 @@ include 'services:webservice'
 */
 
 include 'contract'
+include 'service'
 include 'grpc'
 
 rootProject.name = 'curso-k8s-warehouse'

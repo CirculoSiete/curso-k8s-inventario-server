@@ -6,8 +6,6 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE'
-    classpath 'com.bmuschko:gradle-docker-plugin:3.2.0'
     classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
   }
@@ -22,40 +20,9 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'groovy'
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'org.springframework.boot'
-apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
 apply plugin: 'com.github.ben-manes.versions'
 
-import com.bmuschko.gradle.docker.tasks.image.*
-
-jar {
-  baseName = 'service'
-  version = ''
-}
-
 version = '0.0.1-SNAPSHOT'
-
-task createDockerfile(type: com.bmuschko.gradle.docker.tasks.image.Dockerfile) {
-  destFile = project.file('build/libs/Dockerfile')
-  from 'openjdk:8u141-jre'
-  maintainer 'Miguel Angel Medina Mondragon "miguel@circulosiete.com"'
-  copyFile 'service.jar', '/opt/service.jar'
-  exposePort 6565, 8081
-  entryPoint 'java', "-Djava.awt.headless=true", "-Xms128m", "-Xmx128m", '-jar', '/opt/service.jar'
-}
-
-task buildImage(type: com.bmuschko.gradle.docker.tasks.image.DockerBuildImage) {
-  dependsOn createDockerfile
-  inputDir = createDockerfile.destFile.parentFile
-  tag = 'circulo7/cursos-k8s-inventario-server:' + project.version.toLowerCase()
-}
-
-task pushImage(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
-  dependsOn buildImage
-  imageName = buildImage.tag
-}
-
-createDockerfile.dependsOn bootRepackage
 
 ext {
   grpcVersion = '1.7.0'
@@ -79,14 +46,17 @@ dependencyManagement {
 }
 
 dependencies {
-  compile project(':contract')
-  compile project(':service')
 
-  compile('org.lognet:grpc-spring-boot-starter:2.1.0')
+  compile project(':contract') //TODO: remover este dependencia
+  compile 'org.springframework.boot:spring-boot-starter-amqp'
+  compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+  compile "joda-time:joda-time"
+  compile "org.jadira.usertype:usertype.extended:${jadiraVersion}"
+  compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+  compile 'org.javamoney:moneta:1.1'
 
   compileOnly 'org.projectlombok:lombok'
-
-  runtime 'org.postgresql:postgresql:42.1.4'
 
   testCompile 'org.codehaus.groovy:groovy-all:2.4.12'
   testCompile 'org.springframework.boot:spring-boot-starter-test'
