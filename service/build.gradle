@@ -1,34 +1,5 @@
-buildscript {
-  ext {
-    jadiraVersion = '5.0.0.GA'
-  }
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
-    classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
-  }
-}
-
-repositories {
-  jcenter()
-}
-
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-apply plugin: 'groovy'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.github.ben-manes.versions'
-
-version = '0.0.1-SNAPSHOT'
-
-ext {
-  grpcVersion = '1.7.0'
-  protobufVersion = '3.4.0'
-  protoGenDir = file('generated-src/')
-}
 
 dependencyManagement {
   imports {
@@ -47,7 +18,7 @@ dependencyManagement {
 
 dependencies {
 
-  compile project(':contract') //TODO: remover este dependencia
+  compile project(':contract') //TODO: remover este dependencia, se debe mejorar el ValidacionService
   compile 'org.springframework.boot:spring-boot-starter-amqp'
   compile 'org.springframework.boot:spring-boot-starter-data-jpa'
 
@@ -56,12 +27,6 @@ dependencies {
   compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
   compile 'org.javamoney:moneta:1.1'
 
-  compileOnly 'org.projectlombok:lombok'
-
-  testCompile 'org.codehaus.groovy:groovy-all:2.4.12'
-  testCompile 'org.springframework.boot:spring-boot-starter-test'
-  testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
-  testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
   testCompile 'com.h2database:h2:1.4.196'
 }
 

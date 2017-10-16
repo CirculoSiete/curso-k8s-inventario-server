@@ -1,29 +1,13 @@
 buildscript {
-  ext {
-    jadiraVersion = '5.0.0.GA'
-  }
-  repositories {
-    jcenter()
-  }
   dependencies {
     classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE'
     classpath 'com.bmuschko:gradle-docker-plugin:3.2.0'
-    classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
-    classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
   }
 }
 
-repositories {
-  jcenter()
-}
-
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-apply plugin: 'groovy'
-apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.springframework.boot'
 apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.github.ben-manes.versions'
 
 import com.bmuschko.gradle.docker.tasks.image.*
@@ -32,8 +16,6 @@ jar {
   baseName = 'service'
   version = ''
 }
-
-version = '0.0.1-SNAPSHOT'
 
 task createDockerfile(type: com.bmuschko.gradle.docker.tasks.image.Dockerfile) {
   destFile = project.file('build/libs/Dockerfile')
@@ -57,12 +39,6 @@ task pushImage(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
 
 createDockerfile.dependsOn bootRepackage
 
-ext {
-  grpcVersion = '1.7.0'
-  protobufVersion = '3.4.0'
-  protoGenDir = file('generated-src/')
-}
-
 dependencyManagement {
   imports {
     mavenBom 'io.spring.platform:platform-bom:Brussels-SR5'
@@ -84,15 +60,7 @@ dependencies {
 
   compile('org.lognet:grpc-spring-boot-starter:2.1.0')
 
-  compileOnly 'org.projectlombok:lombok'
-
   runtime 'org.postgresql:postgresql:42.1.4'
-
-  testCompile 'org.codehaus.groovy:groovy-all:2.4.12'
-  testCompile 'org.springframework.boot:spring-boot-starter-test'
-  testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
-  testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
-  testCompile 'com.h2database:h2:1.4.196'
 }
 
 /*
