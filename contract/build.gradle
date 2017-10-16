@@ -6,7 +6,7 @@ sourceSets {
       srcDir 'src/main/proto'
     }
     java {
-      srcDir "$protoGenDir/main/java"
+      srcDir "${protoGenDir}/main/java"
     }
   }
 }
@@ -36,7 +36,7 @@ protobuf {
       }
     }
   }
-  generatedFilesBaseDir = protoGenDir
+  generatedFilesBaseDir = ext.protoGenDir
 }
 
 task cleanProtoGen {

@@ -3,8 +3,10 @@ syntax = "proto3";
 package com.circulosiete.cursos.k8s;
 
 import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
 
 option java_multiple_files = true;
+option go_package = "warehouse";
 
 message Page {
   int32 page = 1;
@@ -49,10 +51,28 @@ message CreateRequest {
 }
 
 service ProductService {
-  rpc Create (ProductRequest) returns (ProductResponse);
-  rpc Read (EntityId) returns (ProductResponse);
-  rpc Update (ProductModel) returns (ProductResponse);
-  rpc Delete (EntityId) returns (ProductResponse);
+  rpc Create (ProductRequest) returns (ProductResponse) {
+    option (google.api.http) = {
+      post: "/v1/products"
+      body: "*"
+    };
+  };
+  rpc Read (EntityId) returns (ProductResponse) {
+    option (google.api.http) = {
+      get: "/v1/products/{id}"
+    };
+  };
+  rpc Update (ProductModel) returns (ProductResponse){
+    option (google.api.http) = {
+      put: "/v1/products/{id}"
+      body: "*"
+    };
+  };
+  rpc Delete (EntityId) returns (ProductResponse){
+    option (google.api.http) = {
+      delete: "/v1/products/{id}"
+    };
+  };
   rpc List (Page) returns (stream ProductResponse);
 }
 

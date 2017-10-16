@@ -1,0 +1,98 @@
+buildscript {
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
+    classpath 'com.bmuschko:gradle-docker-plugin:3.2.0'
+  }
+}
+
+plugins {
+    id 'com.github.blindpirate.gogradle' version '0.7.0'
+}
+
+apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+
+version = '0.0.1-SNAPSHOT'
+
+golang {
+    packagePath = 'github.com/CirculoSiete/productGateway' // go import path of project to be built, NOT local file system path!
+    goVersion = '1.9.1'
+}
+
+task generateStubs(type: Exec) {
+  commandLine './genStubs.sh'
+}
+
+task copyProtoDefinition(type: Copy) {
+    from '../contract/src/main/proto/WarehouseService.proto'
+    into 'warehouse/'
+}
+
+task prepareWorkDir {
+  doFirst {
+    def logDirBase = new File('warehouse')
+    logDirBase.mkdirs()
+
+    def buildDirBase = new File('build')
+    buildDirBase.mkdirs()
+  }
+}
+
+task cleanGolangDesmadrito {
+  doFirst {
+    delete 'vendor'
+    delete 'warehouse'
+    delete 'Dockerfile'
+    delete 'build'
+  }
+}
+
+task cleanGolangBinaries {
+  doFirst {
+    delete fileTree('.') {
+        include 'rest_gateway_*'
+    }
+  }
+}
+
+task copyBinary(type: Copy) {
+    from 'rest_gateway_linux_386'
+    into 'build/'
+}
+
+task createDockerfile(type: com.bmuschko.gradle.docker.tasks.image.Dockerfile) {
+  destFile = project.file('build/Dockerfile')
+  from 'alpine:3.6'
+  //maintainer 'Domingo Suarez Torres "domingo@circulosiete.com"'
+  copyFile 'rest_gateway_linux_386', '/opt/gateway'
+  exposePort 9090
+  entryPoint '/opt/gateway'
+}
+
+task buildImage(type: com.bmuschko.gradle.docker.tasks.image.DockerBuildImage) {
+  dependsOn createDockerfile
+  inputDir = createDockerfile.destFile.parentFile
+  tag = 'circulo7/cursos-k8s-product-rest-gateway:' + project.version.toLowerCase()
+}
+
+task pushImage(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
+  dependsOn buildImage
+  imageName = buildImage.tag
+}
+
+createDockerfile.dependsOn copyBinary
+copyBinary.dependsOn build
+prepare.dependsOn generateStubs
+generateStubs.dependsOn copyProtoDefinition
+copyProtoDefinition.dependsOn prepareWorkDir
+clean.dependsOn cleanGolangDesmadrito,cleanGolangBinaries
+build.dependsOn check
+
+build {
+    targetPlatform = ['linux-386', 'darwin-amd64']
+    //targetPlatform = ['linux-386']
+    go 'build -o ./rest_gateway_${GOOS}_${GOARCH}${GOEXE} github.com/CirculoSiete/productGateway/main'
+}

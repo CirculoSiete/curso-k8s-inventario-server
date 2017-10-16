@@ -1,5 +1,6 @@
 include 'contract'
 include 'service'
 include 'grpc'
+//include 'rest_gateway'
 
 rootProject.name = 'curso-k8s-warehouse'
