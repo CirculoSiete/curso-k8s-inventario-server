@@ -1,20 +1,19 @@
-buildscript {
-  dependencies {
-    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE'
-    classpath 'com.bmuschko:gradle-docker-plugin:3.2.0'
-  }
-}
 
 apply plugin: 'org.springframework.boot'
 apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'com.github.ben-manes.versions'
-
-import com.bmuschko.gradle.docker.tasks.image.*
 
 jar {
   baseName = 'service'
   version = ''
+}
+
+dependencies {
+  compile project(':contract')
+  compile project(':service')
+
+  compile('org.lognet:grpc-spring-boot-starter:2.1.0')
+
+  runtime 'org.postgresql:postgresql:42.1.4'
 }
 
 task createDockerfile(type: com.bmuschko.gradle.docker.tasks.image.Dockerfile) {
@@ -38,59 +37,3 @@ task pushImage(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
 }
 
 createDockerfile.dependsOn bootRepackage
-
-dependencyManagement {
-  imports {
-    mavenBom 'io.spring.platform:platform-bom:Brussels-SR5'
-  }
-  dependencies {
-    dependencySet(group: 'io.grpc', version: grpcVersion) {
-      entry 'grpc-all'
-      entry 'grpc-netty'
-      entry 'grpc-protobuf'
-      entry 'grpc-stub'
-    }
-    dependency "com.google.protobuf:protobuf-java:$protobufVersion"
-  }
-}
-
-dependencies {
-  compile project(':contract')
-  compile project(':service')
-
-  compile('org.lognet:grpc-spring-boot-starter:2.1.0')
-
-  runtime 'org.postgresql:postgresql:42.1.4'
-}
-
-/*
-idea {
-  module {
-    sourceDirs += file('./src/main/proto')
-    sourceDirs += file("${protoGenDir}")
-  }
-  project {
-    ipr {
-      withXml { provider ->
-        // Get XML as groovy.util.Node to work with.
-        def projectXml = provider.asNode()
-
-        // Find compiler configuration component.
-        def compilerConfiguration = projectXml.component.find { component ->
-          component.'@name' == 'CompilerConfiguration'
-        }
-
-        // Replace current annotationProcessing
-        // that is part of the compiler configuration.
-        def currentAnnotationProcessing = compilerConfiguration.annotationProcessing
-        currentAnnotationProcessing.replaceNode {
-          annotationProcessing {
-            profile(name: 'Default', default: true, enabled: true) {
-              processorPath(useClasspath: true)
-            }
-          }
-        }
-      }
-    }
-  }
-}*/

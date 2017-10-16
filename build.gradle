@@ -1,26 +1,56 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
+    classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
+    classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
+    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE'
+    classpath 'com.bmuschko:gradle-docker-plugin:3.2.0'
+  }
+}
+
 allprojects {
   apply plugin: 'java'
   apply plugin: 'idea'
   apply plugin: 'eclipse'
   apply plugin: 'groovy'
+
+  //TODO: investigar porque falla 😩
+  /*idea {
+    project {
+      ipr {
+        withXml { provider ->
+          // Get XML as groovy.util.Node to work with.
+          def projectXml = provider.asNode()
+
+          // Find compiler configuration component.
+          def compilerConfiguration = projectXml.component.find { component ->
+            component.'@name' == 'CompilerConfiguration'
+          }
+
+          // Replace current annotationProcessing
+          // that is part of the compiler configuration.
+          def currentAnnotationProcessing = compilerConfiguration.annotationProcessing
+          currentAnnotationProcessing.replaceNode {
+            annotationProcessing {
+              profile(name: 'Default', default: true, enabled: true) {
+                processorPath(useClasspath: true)
+              }
+            }
+          }
+        }
+      }
+    }
+  }*/
 }
 
 subprojects {
+  def grpcDeps = ['contract', 'grpc', 'service']
 
-  buildscript {
-    dependencies {
-      classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
-      classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
-      classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
-    }
-
-    repositories {
-      jcenter()
-    }
-  }
-
-  //apply plugin: 'io.spring.dependency-management'
-  //apply plugin: 'com.github.ben-manes.versions'
+  apply plugin: 'io.spring.dependency-management'
+  apply plugin: 'com.github.ben-manes.versions'
 
   ext {
     jadiraVersion = '5.0.0.GA'
@@ -34,8 +64,33 @@ subprojects {
   }
 
   version = '0.0.1-SNAPSHOT'
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+
+  dependencyManagement {
+    imports {
+      mavenBom 'io.spring.platform:platform-bom:Brussels-SR5'
+    }
+    if (grpcDeps.contains(project.name)) {
+      dependencies {
+        dependencySet(group: 'io.grpc', version: grpcVersion) {
+          entry 'grpc-all'
+          entry 'grpc-netty'
+          entry 'grpc-protobuf'
+          entry 'grpc-stub'
+        }
+        dependency "com.google.protobuf:protobuf-java:$protobufVersion"
+      }
+    }
+  }
 
   dependencies {
+    if (grpcDeps.contains(project.name)) {
+      compile 'io.grpc:grpc-stub'
+      compile 'io.grpc:grpc-protobuf'
+      compile 'io.grpc:grpc-netty'
+    }
+
     compileOnly 'org.projectlombok:lombok'
 
     testCompile 'org.codehaus.groovy:groovy-all:2.4.12'

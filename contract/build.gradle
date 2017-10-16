@@ -1,27 +1,4 @@
 apply plugin: 'com.google.protobuf'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'com.github.ben-manes.versions'
-
-dependencyManagement {
-  imports {
-    mavenBom 'io.spring.platform:platform-bom:Brussels-SR5'
-  }
-  dependencies {
-    dependencySet(group: 'io.grpc', version: grpcVersion) {
-      entry 'grpc-all'
-      entry 'grpc-netty'
-      entry 'grpc-protobuf'
-      entry 'grpc-stub'
-    }
-    dependency "com.google.protobuf:protobuf-java:$protobufVersion"
-  }
-}
-
-dependencies {
-  compile 'io.grpc:grpc-stub'
-  compile 'io.grpc:grpc-protobuf'
-  compile 'io.grpc:grpc-netty'
-}
 
 sourceSets {
   main {
@@ -67,37 +44,12 @@ task cleanProtoGen {
     delete "${protoGenDir}"
   }
 }
+
 clean.dependsOn cleanProtoGen
 
-
-/*
 idea {
   module {
     sourceDirs += file('./src/main/proto')
     sourceDirs += file("${protoGenDir}")
   }
-  project {
-    ipr {
-      withXml { provider ->
-        // Get XML as groovy.util.Node to work with.
-        def projectXml = provider.asNode()
-
-        // Find compiler configuration component.
-        def compilerConfiguration = projectXml.component.find { component ->
-          component.'@name' == 'CompilerConfiguration'
-        }
-
-        // Replace current annotationProcessing
-        // that is part of the compiler configuration.
-        def currentAnnotationProcessing = compilerConfiguration.annotationProcessing
-        currentAnnotationProcessing.replaceNode {
-          annotationProcessing {
-            profile(name: 'Default', default: true, enabled: true) {
-              processorPath(useClasspath: true)
-            }
-          }
-        }
-      }
-    }
-  }
-}*/
+}
