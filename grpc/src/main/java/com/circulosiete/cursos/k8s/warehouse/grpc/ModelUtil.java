@@ -2,6 +2,7 @@ package com.circulosiete.cursos.k8s.warehouse.grpc;
 
 import com.circulosiete.cursos.k8s.*;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
+import com.google.protobuf.Timestamp;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
