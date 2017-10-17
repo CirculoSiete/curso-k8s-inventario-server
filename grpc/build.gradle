@@ -18,7 +18,7 @@ dependencies {
 
 task createDockerfile(type: com.bmuschko.gradle.docker.tasks.image.Dockerfile) {
   destFile = project.file('build/libs/Dockerfile')
-  from 'openjdk:8u141-jre'
+  from 'openjdk:8u131-jre-alpine'
   maintainer 'Miguel Angel Medina Mondragon "miguel@circulosiete.com"'
   copyFile 'service.jar', '/opt/service.jar'
   exposePort 6565, 8081
