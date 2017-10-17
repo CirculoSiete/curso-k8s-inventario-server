@@ -15,9 +15,9 @@ import (
 )
 
 type config struct {
-	Port            int    `env:"PORT" envDefault:"9090"`
-	ProductEndpoint string `env:"PRODUCT_ENDPOINT" envDefault:"localhost"`
-	ProductPort     int    `env:"PRODUCT_PORT" envDefault:"6565"`
+	Port        int    `env:"PORT" envDefault:"9090"`
+	ProductHost string `env:"PRODUCT_SVC_HOSTNAME" envDefault:"localhost"`
+	ProductPort int    `env:"PRODUCT_SVC_PORT" envDefault:"6565"`
 }
 
 func run() error {
@@ -25,14 +25,14 @@ func run() error {
 	errParse := env.Parse(&cfg)
 	if errParse != nil {
 		fmt.Printf("%+v\n", errParse)
+		return errParse
 	}
-	fmt.Printf("%+v\n", cfg)
 
 	var (
-		endpoint = fmt.Sprintf("%s:%d", cfg.ProductEndpoint, cfg.ProductPort)
+		endpoint        = fmt.Sprintf("%s:%d", cfg.ProductHost, cfg.ProductPort)
 		productEndpoint = flag.String("product_endpoint", endpoint, "endpoint of Products")
 	)
-	fmt.Printf("%s:%s\n", "Product Endpoint: ", endpoint)
+	fmt.Printf("Product gRPC endpoint: %s\n", endpoint)
 
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
@@ -41,12 +41,14 @@ func run() error {
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	err := gw.RegisterProductServiceHandlerFromEndpoint(ctx, mux, *productEndpoint, opts)
+
 	if err != nil {
 		return err
 	}
 
 	listen := fmt.Sprintf(":%d", cfg.Port)
-	fmt.Printf("%s:%s\n", "Listening... ", listen)
+	fmt.Printf("Product REST revert proxy started.\n")
+	fmt.Printf("Listening on port %d\n", cfg.Port)
 	return http.ListenAndServe(listen, mux)
 }
 
