@@ -30,6 +30,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse
       VALIDATION-SVC_HOSTNAME: inventariovalidacion
       VALIDATION-SVC_PORT: 7000
+  productRestGateway:
+    image: circulo7/cursos-k8s-product-rest-gateway:0.0.1-snapshot
+    ports:
+      - 9090:9090
+    environment:
+      PRODUCT_SVC_HOSTNAME: inventarioserver
   inventariovalidacion:
     image: circulo7/cursos-k8s-inventario-validacion:1.0-snapshot
     ports:
