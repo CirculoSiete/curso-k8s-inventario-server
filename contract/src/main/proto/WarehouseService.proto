@@ -73,7 +73,11 @@ service ProductService {
       delete: "/v1/products/{id}"
     };
   };
-  rpc List (Page) returns (stream ProductResponse);
+  rpc List (Page) returns (stream ProductResponse) {
+    option (google.api.http) = {
+      get: "/v1/products"
+    };
+  };
 }
 
 service ValidacionService {
