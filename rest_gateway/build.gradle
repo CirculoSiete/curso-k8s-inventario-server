@@ -96,3 +96,12 @@ build {
     //targetPlatform = ['linux-386']
     go 'build -o ./rest_gateway_${GOOS}_${GOARCH}${GOEXE} github.com/CirculoSiete/productGateway/main'
 }
+
+
+docker {
+
+    registryCredentials {
+        username = project.property('dockerRegistryUsername')
+        password = project.property('dockerRegistryPassword')
+    }
+}
