@@ -62,13 +62,13 @@ service ProductService {
       get: "/v1/products/{id}"
     };
   };
-  rpc Update (ProductModel) returns (ProductResponse){
+  rpc Update (ProductModel) returns (ProductResponse) {
     option (google.api.http) = {
       put: "/v1/products/{id}"
       body: "*"
     };
   };
-  rpc Delete (EntityId) returns (ProductResponse){
+  rpc Delete (EntityId) returns (ProductResponse) {
     option (google.api.http) = {
       delete: "/v1/products/{id}"
     };
