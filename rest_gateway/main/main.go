@@ -3,13 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"net/http"
-
 	"github.com/caarlos0/env"
+	_ "github.com/dimiro1/banner/autoload"
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	"net/http"
 
 	gw "github.com/CirculoSiete/productGateway/warehouse"
 )
