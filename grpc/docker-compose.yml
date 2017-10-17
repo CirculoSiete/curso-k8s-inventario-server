@@ -45,4 +45,9 @@ services:
       SPRING_RABBITMQ_HOST: rabbitmq
       GRPC_PORT: 7000
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse
-
+  zipkin:
+    image: openzipkin/zipkin:2.2.1
+    volumes:
+      - ./data/zipkin:/usr/share/zipkin/data
+    ports:
+      - 9411:9411
