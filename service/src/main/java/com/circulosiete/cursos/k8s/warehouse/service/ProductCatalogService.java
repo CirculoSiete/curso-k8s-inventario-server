@@ -3,6 +3,7 @@ package com.circulosiete.cursos.k8s.warehouse.service;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -19,4 +20,6 @@ public interface ProductCatalogService {
   Optional<Product> update(Long productId, Product newData);
 
   void list(Pageable page, Consumer<Stream<Product>> action);
+
+  List<Product> list(Pageable page);
 }

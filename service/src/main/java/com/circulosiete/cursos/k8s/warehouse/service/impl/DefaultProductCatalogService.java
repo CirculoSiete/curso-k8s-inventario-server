@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -65,6 +67,16 @@ public class DefaultProductCatalogService implements ProductCatalogService {
     try (Stream<Product> productStream = productRepository.streamAllPaged(page)) {
       action.accept(productStream);
     }
+  }
+
+  @Override
+  public List<Product> list(Pageable page) {
+    List<Product> result = new ArrayList<>();
+
+    list(page, productStream ->
+      productStream.forEach(result::add));
+
+    return result;
   }
 
 }

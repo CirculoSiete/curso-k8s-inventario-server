@@ -10,8 +10,9 @@ jar {
 dependencies {
   compile project(':contract')
   compile project(':service')
-
   compile("org.springframework.boot:spring-boot-starter-web")
+
+  testCompile 'com.h2database:h2:1.4.196'
 
   runtime 'org.postgresql:postgresql:42.1.4'
 }
