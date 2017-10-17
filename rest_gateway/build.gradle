@@ -63,6 +63,11 @@ task copyBinary(type: Copy) {
     into 'build/'
 }
 
+task copyBanner(type: Copy) {
+    from 'banner.txt'
+    into 'build/'
+}
+
 task createDockerfile(type: com.bmuschko.gradle.docker.tasks.image.Dockerfile) {
   destFile = project.file('build/Dockerfile')
   from 'alpine:3.6'
@@ -70,7 +75,7 @@ task createDockerfile(type: com.bmuschko.gradle.docker.tasks.image.Dockerfile) {
   copyFile 'rest_gateway_linux_386', '/opt/gateway'
   copyFile 'banner.txt', '/opt/'
   exposePort 9090
-  entryPoint '/opt/gateway'
+  entryPoint '/opt/gateway', '-banner', '/opt/banner.txt'
 }
 
 task buildImage(type: com.bmuschko.gradle.docker.tasks.image.DockerBuildImage) {
@@ -84,7 +89,7 @@ task pushImage(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
   imageName = buildImage.tag
 }
 
-createDockerfile.dependsOn copyBinary
+createDockerfile.dependsOn copyBinary,copyBanner
 copyBinary.dependsOn build
 prepare.dependsOn generateStubs
 generateStubs.dependsOn copyProtoDefinition
