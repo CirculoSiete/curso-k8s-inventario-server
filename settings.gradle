@@ -4,4 +4,6 @@ include 'grpc'
 //TODO: activar este modulo, cuando el problema de Guice se resuelva
 //include 'rest_gateway'
 
+include 'rest'
+
 rootProject.name = 'curso-k8s-warehouse'

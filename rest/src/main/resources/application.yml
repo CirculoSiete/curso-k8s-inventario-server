@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/warehouse
+    username: storer
+    password: foryoureyes
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: true
+management:
+  port: 8091
+server:
+  port: 8090
+
+validation-svc:
+  hostname: "localhost"
+  port: 7000

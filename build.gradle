@@ -48,7 +48,7 @@ allprojects {
 }
 
 subprojects {
-  def grpcDeps = ['contract', 'grpc', 'service']
+  def grpcDeps = ['contract', 'grpc', 'service', 'rest']
 
   apply plugin: 'io.spring.dependency-management'
   apply plugin: 'com.github.ben-manes.versions'
