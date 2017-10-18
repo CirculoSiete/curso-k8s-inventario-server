@@ -1,0 +1,8 @@
+dependencies {
+  compile 'org.slf4j:slf4j-api'
+  compile "io.grpc:grpc-core:${grpcVersion}"
+  compile "io.opentracing:opentracing-api:${opentracingVersion}"
+  compile 'io.opentracing.brave:brave-opentracing:0.22.1'
+  compile 'io.zipkin.reporter:zipkin-sender-okhttp3:1.1.2'
+}
+

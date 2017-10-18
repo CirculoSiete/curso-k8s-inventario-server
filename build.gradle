@@ -58,6 +58,8 @@ subprojects {
     grpcVersion = '1.7.0'
     protobufVersion = '3.4.0'
     protoGenDir = file('generated-src/')
+    springCloudVersion = 'Dalston.SR4'
+    opentracingVersion= '0.30.0'
   }
 
   repositories {
@@ -71,6 +73,7 @@ subprojects {
   dependencyManagement {
     imports {
       mavenBom 'io.spring.platform:platform-bom:Brussels-SR5'
+      mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
     if (grpcDeps.contains(project.name)) {
       dependencies {
