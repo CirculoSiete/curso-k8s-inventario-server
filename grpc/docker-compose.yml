@@ -30,6 +30,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse
       VALIDATION-SVC_HOSTNAME: inventariovalidacion
       VALIDATION-SVC_PORT: 7000
+      ZIPKIN-SVC_HOSTNAME: zipkin
   productRestGateway:
     image: circulo7/cursos-k8s-product-rest-gateway:0.0.1-snapshot
     ports:
@@ -45,4 +46,9 @@ services:
       SPRING_RABBITMQ_HOST: rabbitmq
       GRPC_PORT: 7000
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse
-
+  zipkin:
+    image: openzipkin/zipkin:2.2.1
+    volumes:
+      - ./data/zipkin:/usr/share/zipkin/data
+    ports:
+      - 9411:9411
