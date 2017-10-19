@@ -1,6 +1,7 @@
 package com.circulosiete.cursos.k8s.warehouse.repo;
 
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,4 +14,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
   @Query("select p from Product p")
   Stream<Product> streamAllPaged(Pageable pageable);
+
+  Page<Product> findAll(Pageable pageable);
 }
