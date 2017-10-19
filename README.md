@@ -6,3 +6,9 @@
 En la terminal ejecutar
 
       $ ./runGrpc.sh
+      
+      
+## Detener los contenedores
+
+
+      $ ./stopGrpc.sh
