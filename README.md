@@ -1,5 +1,6 @@
 # warehouse
-  
+
+Desribir mejor lo que se hace
     
 ## Ejecutar el proyecto
 
@@ -13,5 +14,5 @@ En la terminal ejecutar
 
       $ ./stopGrpc.sh
 
-
 ### algo mas por aca
+
