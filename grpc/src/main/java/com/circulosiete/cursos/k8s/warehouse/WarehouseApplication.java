@@ -15,7 +15,6 @@ import static io.opentracing.contrib.ServerTracingInterceptor.ServerRequestAttri
 @EnableJpaAuditing
 public class WarehouseApplication {
 
-
   @Bean
   @GRpcGlobalInterceptor
   public ServerInterceptor globalInterceptor(Tracer tracer) {

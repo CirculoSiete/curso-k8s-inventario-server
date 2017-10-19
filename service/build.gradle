@@ -2,8 +2,10 @@
 dependencies {
   compile project(':contract') //TODO: remover este dependencia, se debe mejorar el ValidacionService
   compile project(':grpc-opentracing')
+  compile 'io.opentracing.contrib:opentracing-jdbc:0.0.4'
   compile 'org.springframework.boot:spring-boot-starter-amqp'
   compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+  compile 'org.springframework.boot:spring-boot-starter-aop'
 
   compile "joda-time:joda-time"
   compile "org.jadira.usertype:usertype.extended:${jadiraVersion}"

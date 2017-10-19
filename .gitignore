@@ -9,8 +9,7 @@ build
 generated-src
 data
 lib
-.gogradle
-rest_gateway_darwin_amd64
-rest_gateway_linux_386
-vendor
+rest_gateway/.gogradle
+rest_gateway/rest_gateway_*
+rest_gateway/vendor
 rest_gateway/warehouse/

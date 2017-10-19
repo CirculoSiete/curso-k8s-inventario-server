@@ -1,5 +1,6 @@
 package com.circulosiete.cursos.k8s.warehouse.service.impl;
 
+import com.circulosiete.cursos.k8s.warehouse.config.Trace;
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
 import com.circulosiete.cursos.k8s.warehouse.repo.ProductRepository;
 import com.circulosiete.cursos.k8s.warehouse.service.ProductCatalogService;
@@ -28,6 +29,7 @@ public class DefaultProductCatalogService implements ProductCatalogService {
     this.validacionService = validacionService;
   }
 
+  @Trace
   @Override
   public Optional<Product> add(Product newProduct) {
     boolean aceptado = validacionService.createValidacion(newProduct.getName());
@@ -41,6 +43,7 @@ public class DefaultProductCatalogService implements ProductCatalogService {
     }
   }
 
+  @Trace
   @Override
   public Optional<Product> delete(Long productId) {
 
@@ -51,6 +54,7 @@ public class DefaultProductCatalogService implements ProductCatalogService {
 
   }
 
+  @Trace
   @Override
   public Optional<Product> update(Long productId, Product newData) {
 
@@ -63,6 +67,7 @@ public class DefaultProductCatalogService implements ProductCatalogService {
 
   }
 
+  @Trace
   @Override
   public void list(Pageable page, Consumer<Stream<Product>> action) {
     try (Stream<Product> productStream = productRepository.streamAllPaged(page)) {
@@ -70,6 +75,7 @@ public class DefaultProductCatalogService implements ProductCatalogService {
     }
   }
 
+  @Trace
   @Override
   public List<Product> list(Pageable page) {
     List<Product> result = new ArrayList<>();
@@ -80,6 +86,7 @@ public class DefaultProductCatalogService implements ProductCatalogService {
     return result;
   }
 
+  @Trace
   @Override
   public Page<Product> paged(Pageable page) {
     return productRepository.findAll(page);
