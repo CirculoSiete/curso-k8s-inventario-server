@@ -1,6 +1,5 @@
 
 dependencies {
-
   compile project(':contract') //TODO: remover este dependencia, se debe mejorar el ValidacionService
   compile project(':grpc-opentracing')
   compile 'org.springframework.boot:spring-boot-starter-amqp'
