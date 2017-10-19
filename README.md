@@ -12,3 +12,6 @@ En la terminal ejecutar
 
 
       $ ./stopGrpc.sh
+
+
+### algo mas por aca
