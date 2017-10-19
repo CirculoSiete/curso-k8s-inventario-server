@@ -38,7 +38,7 @@ services:
     environment:
       PRODUCT_SVC_HOSTNAME: inventarioserver
   inventariovalidacion:
-    image: circulo7/cursos-k8s-inventario-validacion:1.0-snapshot
+    image: circulo7/cursos-k8s-inventario-validacion:0.0.1-snapshot
     ports:
       - 7000:7000
       - 8081:8081
@@ -46,6 +46,7 @@ services:
       SPRING_RABBITMQ_HOST: rabbitmq
       GRPC_PORT: 7000
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse
+      ZIPKIN-SVC_HOSTNAME: zipkin
   zipkin:
     image: openzipkin/zipkin:2.2.1
     volumes:

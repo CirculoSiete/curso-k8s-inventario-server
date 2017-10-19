@@ -6,5 +6,6 @@ include 'grpc-opentracing'
 //include 'rest_gateway'
 
 include 'rest'
+include 'validation'
 
 rootProject.name = 'curso-k8s-warehouse'

@@ -1,0 +1,47 @@
+apply plugin: 'org.springframework.boot'
+apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+
+jar {
+  baseName = 'service'
+  version = ''
+}
+
+dependencies {
+  compile project(':service')
+  compile 'org.springframework.boot:spring-boot-starter-actuator'
+  compile 'org.lognet:grpc-spring-boot-starter:2.1.0'
+
+  runtime 'org.postgresql:postgresql:42.1.4'
+
+  testCompile 'org.springframework.boot:spring-boot-starter-test'
+  testCompile 'org.spockframework:spock-spring'
+}
+
+task createDockerfile(type: com.bmuschko.gradle.docker.tasks.image.Dockerfile) {
+  destFile = project.file('build/libs/Dockerfile')
+  from 'openjdk:8u131-jre-alpine'
+  maintainer 'Miguel Angel Medina Mondragon "miguel@circulosiete.com"'
+  copyFile 'service.jar', '/opt/service.jar'
+  exposePort 7000
+  entryPoint 'java', "-Djava.awt.headless=true", "-Xms128m", "-Xmx128m", '-jar', '/opt/service.jar'
+}
+
+task buildImage(type: com.bmuschko.gradle.docker.tasks.image.DockerBuildImage) {
+  dependsOn createDockerfile
+  inputDir = createDockerfile.destFile.parentFile
+  tag = 'circulo7/cursos-k8s-inventario-validacion:' + project.version.toLowerCase()
+}
+
+task pushImage(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
+  dependsOn buildImage
+  imageName = buildImage.tag
+}
+
+createDockerfile.dependsOn bootRepackage
+
+docker {
+  registryCredentials {
+    username = project.property('dockerRegistryUsername')
+    password = project.property('dockerRegistryPassword')
+  }
+}

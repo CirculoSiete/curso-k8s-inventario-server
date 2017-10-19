@@ -16,4 +16,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   Stream<Product> streamAllPaged(Pageable pageable);
 
   Page<Product> findAll(Pageable pageable);
+
+  boolean existsByName(String name);
 }

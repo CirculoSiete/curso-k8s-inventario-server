@@ -18,8 +18,8 @@ public class ValidacionService {
   private ManagedChannel channel;
   private ValidacionServiceGrpc.ValidacionServiceBlockingStub stub;
   @Autowired
-  public ValidacionService(@Value("${validation-svc.hostname}") String hostname,
-                           @Value("${validation-svc.port}") int port){
+  public ValidacionService(@Value("${validation-svc.hostname:localhost}") String hostname,
+                           @Value("${validation-svc.port:7000}") int port){
     this.hostname = hostname;
     this.port = port;
     channel = ManagedChannelBuilder.forAddress(hostname, port)
