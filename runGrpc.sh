@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-./gradlew clean grpc:buildImage
+./gradlew clean grpc:buildImage validation:buildImage
 
 cd rest_gateway
 

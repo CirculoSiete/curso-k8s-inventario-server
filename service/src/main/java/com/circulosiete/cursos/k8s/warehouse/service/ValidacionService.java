@@ -22,8 +22,8 @@ public class ValidacionService {
 
   @Autowired
   public ValidacionService(Tracer tracer,
-                           @Value("${validation-svc.hostname}") String hostname,
-                           @Value("${validation-svc.port}") int port) {
+                           @Value("${validation-svc.hostname:localhost}") String hostname,
+                           @Value("${validation-svc.port:7000}") int port) {
     validationChannel = ManagedChannelBuilder.forAddress(hostname, port)
       .usePlaintext(true)
       .build();
@@ -43,7 +43,6 @@ public class ValidacionService {
         HEADERS)
       .build();
     validacionServiceStub = ValidacionServiceGrpc.newBlockingStub(tracingInterceptor.intercept(validationChannel));
-
   }
 
   public boolean createValidacion(String nombre) {
