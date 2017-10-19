@@ -1,6 +1,7 @@
 include 'contract'
 include 'service'
 include 'grpc'
+include 'grpc-opentracing'
 //TODO: activar este modulo, cuando el problema de Guice se resuelva
 //include 'rest_gateway'
 
