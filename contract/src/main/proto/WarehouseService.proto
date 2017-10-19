@@ -3,6 +3,7 @@ syntax = "proto3";
 package com.circulosiete.cursos.k8s;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 import "google/api/annotations.proto";
 
 option java_multiple_files = true;
@@ -11,6 +12,17 @@ option go_package = "warehouse";
 message Page {
   int32 page = 1;
   int32 size = 2;
+}
+
+message PageProductResponse {
+  google.protobuf.BoolValue first = 1;
+  google.protobuf.BoolValue last = 2;
+  google.protobuf.Int32Value number = 3;
+  google.protobuf.Int32Value numberOfElements = 4;
+  google.protobuf.Int32Value size = 5;
+  google.protobuf.Int64Value totalElements = 6;
+  google.protobuf.Int32Value totalPages = 7;
+  repeated ProductModel content = 8;
 }
 
 message ProductRequest {
@@ -35,11 +47,6 @@ message ProductModel {
 
 message ProductResponse {
   ProductModel product = 1;
-}
-
-message ProductPageResponse {
-  Page page = 1;
-  ProductResponse product = 2;
 }
 
 message ValidacionResponse {
@@ -73,7 +80,16 @@ service ProductService {
       delete: "/v1/products/{id}"
     };
   };
-  rpc List (Page) returns (stream ProductResponse);
+  rpc Paged (Page) returns (PageProductResponse) {
+    option (google.api.http) = {
+      get: "/v1/products"
+    };
+  }
+  rpc List (Page) returns (stream ProductResponse) {
+    option (google.api.http) = {
+      get: "/v1/stream/products"
+    };
+  };
 }
 
 service ValidacionService {

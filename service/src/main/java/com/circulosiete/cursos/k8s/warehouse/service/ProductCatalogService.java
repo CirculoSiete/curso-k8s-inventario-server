@@ -1,6 +1,7 @@
 package com.circulosiete.cursos.k8s.warehouse.service;
 
 import com.circulosiete.cursos.k8s.warehouse.model.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface ProductCatalogService {
   void list(Pageable page, Consumer<Stream<Product>> action);
 
   List<Product> list(Pageable page);
+
+  Page<Product> paged(Pageable page);
 }

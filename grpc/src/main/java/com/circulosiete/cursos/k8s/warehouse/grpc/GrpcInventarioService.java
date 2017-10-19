@@ -1,13 +1,17 @@
 package com.circulosiete.cursos.k8s.warehouse.grpc;
 
 import com.circulosiete.cursos.k8s.*;
+import com.circulosiete.cursos.k8s.warehouse.model.Product;
 import com.circulosiete.cursos.k8s.warehouse.repo.ProductRepository;
 import com.circulosiete.cursos.k8s.warehouse.service.ProductCatalogService;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 
-import static com.circulosiete.cursos.k8s.warehouse.grpc.ModelUtil.from;
+import java.util.List;
+
+import static com.circulosiete.cursos.k8s.warehouse.grpc.ModelUtil.*;
+import static java.util.stream.Collectors.toList;
 
 
 @Slf4j
@@ -52,6 +56,31 @@ public class GrpcInventarioService extends ProductServiceGrpc.ProductServiceImpl
       productsStream -> productsStream.forEach(
         product -> responseObserver.onNext(from(product))));
 
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void paged(Page request, StreamObserver<PageProductResponse> responseObserver) {
+    org.springframework.data.domain.Page<Product> pagedResult = productCatalogService
+      .paged(from(request));
+
+    List<ProductModel> list = pagedResult
+      .getContent().stream()
+      .map(ModelUtil::fromProduct)
+      .collect(toList());
+
+    PageProductResponse result = PageProductResponse.newBuilder()
+      .addAllContent(list)
+      .setFirst(boolValue(pagedResult.isFirst()))
+      .setLast(boolValue(pagedResult.isLast()))
+      .setNumber(intValue(pagedResult.getNumber()))
+      .setNumberOfElements(intValue(pagedResult.getNumberOfElements()))
+      .setSize(intValue(pagedResult.getSize()))
+      .setTotalElements(longValue(pagedResult.getTotalElements()))
+      .setTotalPages(intValue(pagedResult.getTotalPages()))
+      .build();
+
+    responseObserver.onNext(result);
     responseObserver.onCompleted();
   }
 
