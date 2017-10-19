@@ -6,8 +6,6 @@ cd rest_gateway
 
 ./gradlew buildImage
 
-cd ..
-
-cd grpc
+cd ../grpc
 
 docker-compose up --build -d
