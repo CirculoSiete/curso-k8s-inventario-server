@@ -9,7 +9,6 @@ jar {
 dependencies {
   compile project(':contract')
   compile project(':service')
-  compile project(':grpc-opentracing')
   compile 'org.lognet:grpc-spring-boot-starter:2.1.0'
 
   testCompile 'com.h2database:h2:1.4.196'
