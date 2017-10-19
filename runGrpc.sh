@@ -2,6 +2,12 @@
 
 ./gradlew clean grpc:buildImage
 
+cd rest_gateway
+
+./gradlew buildImage
+
+cd ..
+
 cd grpc
 
-docker-compose up --build
+docker-compose up --build -d
