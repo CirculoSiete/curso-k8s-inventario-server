@@ -28,9 +28,9 @@ services:
     environment:
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse
-      VALIDATION-SVC_HOSTNAME: inventariovalidacion
-      VALIDATION-SVC_PORT: 7000
-      ZIPKIN-SVC_HOSTNAME: zipkin
+      VALIDATION_HOSTNAME: inventariovalidacion
+      VALIDATION_PORT: 7000
+      ZIPKIN_HOSTNAME: zipkin
   productRestGateway:
     image: circulo7/cursos-k8s-product-rest-gateway:0.0.1-snapshot
     ports:
@@ -63,13 +63,3 @@ services:
     image: circulo7/cursos-k8s-admin-frontend
     ports:
       - 3030:3030
-  minio:
-    image: minio/minio
-    ports:
-      - "9000:9000"
-    volumes:
-      - ./test/.minio/data:/export
-      - ./test/.minio/config:/root/.minio
-    environment:
-      - "MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE"
-      - "MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"

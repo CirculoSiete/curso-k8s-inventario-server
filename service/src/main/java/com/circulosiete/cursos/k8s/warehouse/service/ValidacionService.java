@@ -22,8 +22,8 @@ public class ValidacionService {
 
   @Autowired
   public ValidacionService(Tracer tracer,
-                           @Value("${validation-svc.hostname:localhost}") String hostname,
-                           @Value("${validation-svc.port:7000}") int port) {
+                           @Value("${validation.hostname:localhost}") String hostname,
+                           @Value("${validation.port:7000}") int port) {
     validationChannel = ManagedChannelBuilder.forAddress(hostname, port)
       .usePlaintext(true)
       .build();

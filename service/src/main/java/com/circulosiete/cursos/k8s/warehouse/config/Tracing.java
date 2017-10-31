@@ -15,11 +15,11 @@ import static zipkin.reporter.Encoding.JSON;
 
 @Configuration
 public class Tracing {
-  @Value("${zipkin-svc.hostname:localhost}")
+  @Value("${zipkin.hostname:localhost}")
   String zipkinHostname;
-  @Value("${zipkin-svc.port:9411}")
+  @Value("${zipkin.port:9411}")
   Integer zipkinPort;
-  @Value("${zipkin-svc.path:api/v1/spans}")
+  @Value("${zipkin.path:api/v1/spans}")
   String zipkinPath;
   @Value("${spring.application.name}")
   String applicationName;
