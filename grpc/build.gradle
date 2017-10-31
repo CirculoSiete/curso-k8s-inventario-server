@@ -37,3 +37,10 @@ task pushImage(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
 }
 
 createDockerfile.dependsOn bootRepackage
+
+docker {
+  registryCredentials {
+    username = project.property('dockerRegistryUsername')
+    password = project.property('dockerRegistryPassword')
+  }
+}
