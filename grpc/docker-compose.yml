@@ -46,7 +46,7 @@ services:
       SPRING_RABBITMQ_HOST: rabbitmq
       GRPC_PORT: 7000
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/warehouse
-      ZIPKIN-SVC_HOSTNAME: zipkin
+      ZIPKIN_HOSTNAME: zipkin
   zipkin:
     image: openzipkin/zipkin:2.2.1
     volumes:
@@ -63,3 +63,13 @@ services:
     image: circulo7/cursos-k8s-admin-frontend
     ports:
       - 3030:3030
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./test/.minio/data:/export
+      - ./test/.minio/config:/root/.minio
+    environment:
+      - "MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE"
+      - "MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
