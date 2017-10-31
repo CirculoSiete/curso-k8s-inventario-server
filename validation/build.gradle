@@ -8,8 +8,9 @@ jar {
 
 dependencies {
   compile project(':service')
-  compile 'org.springframework.boot:spring-boot-starter-actuator'
   compile 'org.lognet:grpc-spring-boot-starter:2.1.0'
+  compile 'org.springframework.boot:spring-boot-starter-web'
+  compile 'org.springframework.boot:spring-boot-starter-actuator'
 
   runtime 'org.postgresql:postgresql:42.1.4'
 
@@ -22,7 +23,7 @@ task createDockerfile(type: com.bmuschko.gradle.docker.tasks.image.Dockerfile) {
   from 'openjdk:8u131-jre-alpine'
   maintainer 'Miguel Angel Medina Mondragon "miguel@circulosiete.com"'
   copyFile 'service.jar', '/opt/service.jar'
-  exposePort 7000
+  exposePort 7000, 8081
   entryPoint 'java', "-Djava.awt.headless=true", "-Xms128m", "-Xmx128m", '-jar', '/opt/service.jar'
 }
 

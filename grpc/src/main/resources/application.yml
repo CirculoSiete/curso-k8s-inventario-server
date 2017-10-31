@@ -1,4 +1,7 @@
 spring.application.name: warehouse
+management.security.enabled: false
+management.port: 8081
+
 grpc:
  enabled: true
 
@@ -10,9 +13,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     generate-ddl: true
-management:
-  port: 8081
 
-validation-svc:
+validation:
   hostname: "localhost"
   port: 7000

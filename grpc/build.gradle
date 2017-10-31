@@ -9,7 +9,9 @@ jar {
 dependencies {
   compile project(':contract')
   compile project(':service')
+  compile 'org.springframework.boot:spring-boot-starter-web'
   compile 'org.lognet:grpc-spring-boot-starter:2.1.0'
+  compile 'org.springframework.boot:spring-boot-starter-actuator'
 
   testCompile 'com.h2database:h2:1.4.196'
 
