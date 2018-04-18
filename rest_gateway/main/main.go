@@ -55,6 +55,7 @@ func run() error {
 		return err
 	}
 
+	//Usar Zipkin o el API de Jaeger?
 	/*zipkinPropagator := zipkin.NewZipkinB3HTTPHeaderPropagator()
 	injector := jaeger.TracerOptions.Injector(opentracing.HTTPHeaders, zipkinPropagator)
 	extractor := jaeger.TracerOptions.Extractor(opentracing.HTTPHeaders, zipkinPropagator)
