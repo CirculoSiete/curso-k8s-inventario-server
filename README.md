@@ -1,15 +1,14 @@
 # warehouse
 
-Desribir mejor lo que se hace
+Describir mejor lo que se hace
     
 ## Ejecutar el proyecto
 
 En la terminal ejecutar
 
-      $ ./runGrpc.sh
-      
-      
+      $ ./runGrpc.sh      
+
 ## Detener los contenedores
 
-
       $ ./stopGrpc.sh
+
