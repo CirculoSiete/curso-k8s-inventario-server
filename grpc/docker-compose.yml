@@ -60,6 +60,12 @@ services:
     ports:
       - 8787:80
   adminfrontend:
-    image: circulo7/cursos-k8s-admin-frontend:beta
+    image: circulo7/cursos-k8s-admin-frontend:grpc-0.0.4
     ports:
       - 3030:3030
+  grpc-web-proxy:
+    image: circulo7/grpc-web-proxy
+    environment:
+      BACKEND_ADDRESS: inventarioserver:6565
+      PORT: 8080
+  
